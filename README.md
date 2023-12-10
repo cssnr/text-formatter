@@ -8,8 +8,7 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=smashedr_web-tools-extension&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=smashedr_web-tools-extension)
 # Web Tools Extension
 
-Modern Chrome Web Extension and Firefox Browser Addon Simple Example.
-[README.md](README.md) copied from [link-extractor](https://github.com/cssnr/link-extractor) as an example.
+Modern Chrome Web Extension and Firefox Browser Addon with various Web Tools.
 
 *   [Install](#install)
 *   [Features](#features)
@@ -40,7 +39,7 @@ For any issues, bugs or concerns; please [Open an Issue](https://github.com/smas
 
 # Configuration
 
-You can pin the Addon by clicking the `Puzzle Piece`, find the Link Extractor icon, then;  
+You can pin the Addon by clicking the `Puzzle Piece`, find the Web Extension icon, then;  
 **Chrome,** click the `Pin` icon.  
 **Firefox,** click the `Settings Wheel` and `Pin to Toolbar`.
 
