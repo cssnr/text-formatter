@@ -1,4 +1,4 @@
-// JS for page.html
+// JS for text.html
 
 document.addEventListener('DOMContentLoaded', initWindow)
 

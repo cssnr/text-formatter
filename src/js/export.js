@@ -8,7 +8,7 @@
  * @return {String}
  */
 export function processText(text, length = '30') {
-    console.log('processText')
+    console.log('processText: length:', length)
     const split = text.split(' ')
     const results = []
     let line = ''

@@ -3,7 +3,7 @@
   "description": "Web Tools Web Extension and Browser Addon.",
   "homepage_url": "https://github.com/smashedr",
   "author": "Shane",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "manifest_version": 3,
   "commands": {
     "_execute_action": {
@@ -16,7 +16,7 @@
       "suggested_key": {
         "default": "Alt+Shift+X"
       },
-      "description": "Open Extension Page"
+      "description": "Open Split Text Page"
     },
     "open_window": {
       "suggested_key": {

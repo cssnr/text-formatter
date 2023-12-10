@@ -65,6 +65,12 @@ async function contextMenusClicked(ctx, tab) {
     console.log('contextMenusClicked:', ctx, tab)
     if (ctx.menuItemId === 'options') {
         chrome.runtime.openOptionsPage()
+    } else if (ctx.menuItemId === 'open_text') {
+        console.log('ctx.selectionText:', ctx.selectionText)
+        const text = ctx.selectionText
+        const url = new URL(chrome.runtime.getURL('/html/text.html'))
+        url.searchParams.set('text', text)
+        await chrome.tabs.create({ active: true, url: url.toString() })
     } else if (ctx.menuItemId === 'split_text') {
         console.log('ctx.selectionText:', ctx.selectionText)
         let { options } = await chrome.storage.sync.get(['options'])
@@ -73,9 +79,9 @@ async function contextMenusClicked(ctx, tab) {
         await clipboardWrite(text)
     } else if (ctx.menuItemId === 'open_page') {
         // const views = chrome.extension.getViews()
-        // const result = views.find((item) => item.location.href.endsWith('html/page.html'))
+        // const result = views.find((item) => item.location.href.endsWith('html/text.html'))
         // console.log('result:', result)
-        const url = chrome.runtime.getURL('/html/page.html')
+        const url = chrome.runtime.getURL('/html/text.html')
         await chrome.tabs.create({ active: true, url })
     } else if (ctx.menuItemId === 'open_window') {
         await chrome.windows.create({
@@ -97,7 +103,7 @@ async function contextMenusClicked(ctx, tab) {
 async function onCommand(command) {
     console.log(`onCommand: ${command}`)
     if (command === 'open_page') {
-        const url = chrome.runtime.getURL('/html/page.html')
+        const url = chrome.runtime.getURL('/html/text.html')
         await chrome.tabs.create({ active: true, url })
     } else if (command === 'open_window') {
         await chrome.windows.create({
@@ -153,7 +159,8 @@ function createContextMenus() {
     chrome.contextMenus.removeAll()
     const ctx = ['all']
     const contexts = [
-        [['selection'], 'split_text', 'normal', 'Split Text'],
+        [['selection'], 'open_text', 'normal', 'Open Text in Page'],
+        [['selection'], 'split_text', 'normal', 'Split Text at Saved'],
         [['selection'], 'separator-2', 'separator', 'separator'],
         [ctx, 'open_page', 'normal', 'Main Page'],
         // [ctx, 'open_window', 'normal', 'Main Window'],

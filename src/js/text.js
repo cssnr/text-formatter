@@ -1,4 +1,4 @@
-// JS for page.html
+// JS for text.html
 
 import { processText } from './export.js'
 
@@ -24,13 +24,23 @@ document.getElementById('length-form').addEventListener('submit', addLength)
  * Initialize Page
  * @function initPage
  */
-async function initPage() {
+async function initPage(event) {
     console.log('initPage')
     const { options } = await chrome.storage.sync.get(['options'])
     console.log('options:', options)
+    console.log('options.textSplitLength:', options.textSplitLength)
     document.getElementById('length').value = options.textSplitLength
+    lengthRange.value = options.textSplitLength
     lengthRange.min = options.textSliderMin
     lengthRange.max = options.textSliderMax
+
+    const urlParams = new URLSearchParams(window.location.search)
+    const text = urlParams.get('text')
+    console.log('text:', text)
+    if (text) {
+        document.getElementById('textInput').value = text
+        await processForm(event)
+    }
 
     // if (options.textLengths?.length) {
     //     document.getElementById('no-filters').remove()
@@ -73,18 +83,20 @@ async function pasteBtn() {
 async function processForm(event) {
     console.log('processForm', event)
     let length
-    if (event.target.dataset.pattern) {
+    if (event.target.dataset?.pattern) {
         length = event.target.dataset.pattern
     } else {
         length = event.target.value
     }
+    if (!length) {
+        length = lengthInput.value
+    }
     console.log('length:', length)
     const text = document.getElementById('textInput').value
-    console.log('input text:', text)
+    // console.log('input text:', text)
     // previousText = text
     const result = processText(text, length)
-    console.log(result)
-    console.log('output text:', result)
+    // console.log('output text:', result)
     document.getElementById('textOutput').value = result
     await navigator.clipboard.writeText(result)
 }
