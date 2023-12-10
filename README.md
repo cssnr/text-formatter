@@ -1,6 +1,6 @@
-[![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/ifefifghpkllfibejafbakmflidjcjfp?logo=google&logoColor=white&label=google%20users)](https://chromewebstore.google.com/detail/text-formatter/ifefifghpkllfibejafbakmflidjcjfp)
+[![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/medimbembaeldnglneiipkenpagjfcdj?logo=google&logoColor=white&label=google%20users)](https://chromewebstore.google.com/detail/text-formatter/medimbembaeldnglneiipkenpagjfcdj)
 [![Mozilla Add-on Users](https://img.shields.io/amo/users/text-formatter?logo=mozilla&label=mozilla%20users)](https://addons.mozilla.org/addon/text-formatter)
-[![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/ifefifghpkllfibejafbakmflidjcjfp?label=chrome&logo=googlechrome)](https://chromewebstore.google.com/detail/text-formatter/ifefifghpkllfibejafbakmflidjcjfp)
+[![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/medimbembaeldnglneiipkenpagjfcdj?label=chrome&logo=googlechrome)](https://chromewebstore.google.com/detail/text-formatter/medimbembaeldnglneiipkenpagjfcdj)
 [![Mozilla Add-on Version](https://img.shields.io/amo/v/text-formatter?label=firefox&logo=firefox)](https://addons.mozilla.org/addon/text-formatter)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/text-formatter?logo=github)](https://github.com/cssnr/text-formatter/releases/latest)
 [![Manifest Version](https://img.shields.io/github/manifest-json/v/cssnr/text-formatter?filename=manifest.json&logo=json&label=manifest)](https://github.com/cssnr/text-formatter/blob/master/manifest.json)
@@ -18,19 +18,22 @@ Modern Chrome Web Extension and Firefox Browser Addon for Splitting and Formatti
 
 # Install
 
-*   [Google Chrome Web Store](https://chromewebstore.google.com/detail/text-formatter/ifefifghpkllfibejafbakmflidjcjfp)
-*   [Mozilla Firefox Add-ons](https://addons.mozilla.org/addon/text-formatter)
+[![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/main/src/chrome/chrome_48x48.png)](https://chromewebstore.google.com/detail/text-formatter/medimbembaeldnglneiipkenpagjfcdj)
+[![Firefox](https://raw.githubusercontent.com/alrra/browser-logos/main/src/firefox/firefox_48x48.png)](https://github.com/cssnr/text-formatter/releases/latest/download/text_formatter-firefox.xpi)
+[![Edge](https://raw.githubusercontent.com/alrra/browser-logos/main/src/edge/edge_48x48.png)](https://chromewebstore.google.com/detail/text-formatter/medimbembaeldnglneiipkenpagjfcdj)
+[![Chromium](https://raw.githubusercontent.com/alrra/browser-logos/main/src/chromium/chromium_48x48.png)](https://chromewebstore.google.com/detail/text-formatter/medimbembaeldnglneiipkenpagjfcdj)
+[![Brave](https://raw.githubusercontent.com/alrra/browser-logos/main/src/brave/brave_48x48.png)](https://chromewebstore.google.com/detail/text-formatter/medimbembaeldnglneiipkenpagjfcdj)
+[![Vivaldi](https://raw.githubusercontent.com/alrra/browser-logos/main/src/vivaldi/vivaldi_48x48.png)](https://chromewebstore.google.com/detail/text-formatter/medimbembaeldnglneiipkenpagjfcdj)
+[![Opera](https://raw.githubusercontent.com/alrra/browser-logos/main/src/opera/opera_48x48.png)](https://chromewebstore.google.com/detail/text-formatter/medimbembaeldnglneiipkenpagjfcdj)
 
-[![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/main/src/chrome/chrome_48x48.png)](https://chromewebstore.google.com/detail/text-formatter/ifefifghpkllfibejafbakmflidjcjfp)
-[![Firefox](https://raw.githubusercontent.com/alrra/browser-logos/main/src/firefox/firefox_48x48.png)](https://addons.mozilla.org/addon/text-formatter)
-[![Edge](https://raw.githubusercontent.com/alrra/browser-logos/main/src/edge/edge_48x48.png)](https://chromewebstore.google.com/detail/text-formatter/ifefifghpkllfibejafbakmflidjcjfp)
-[![Chromium](https://raw.githubusercontent.com/alrra/browser-logos/main/src/chromium/chromium_48x48.png)](https://chromewebstore.google.com/detail/text-formatter/ifefifghpkllfibejafbakmflidjcjfp)
-[![Brave](https://raw.githubusercontent.com/alrra/browser-logos/main/src/brave/brave_48x48.png)](https://chromewebstore.google.com/detail/text-formatter/ifefifghpkllfibejafbakmflidjcjfp)
-[![Vivaldi](https://raw.githubusercontent.com/alrra/browser-logos/main/src/vivaldi/vivaldi_48x48.png)](https://chromewebstore.google.com/detail/text-formatter/ifefifghpkllfibejafbakmflidjcjfp)
-[![Opera](https://raw.githubusercontent.com/alrra/browser-logos/main/src/opera/opera_48x48.png)](https://chromewebstore.google.com/detail/text-formatter/ifefifghpkllfibejafbakmflidjcjfp)
+> [!IMPORTANT]  
+> Firefox is currently only available from a [GitHub Release](https://github.com/cssnr/text-formatter/releases/latest/download/text_formatter-firefox.xpi).
 
 All **Chromium** Based Browsers can install the extension from the
-[Chrome Web Store](https://chromewebstore.google.com/detail/text-formatter/ifefifghpkllfibejafbakmflidjcjfp).
+[Chrome Web Store](https://chromewebstore.google.com/detail/text-formatter/medimbembaeldnglneiipkenpagjfcdj).
+
+*   Download a [Chrome Release](https://github.com/cssnr/text-formatter/releases/latest/download/text_formatter-chrome.crx) from GitHub
+*   Download a [Firefox Release](https://github.com/cssnr/text-formatter/releases/latest/download/text_formatter-firefox.xpi) from GitHub
 
 # Features
 
