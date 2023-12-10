@@ -14,13 +14,21 @@
         <div class="col-12">
             <h1>Split Text</h1>
             <div>
+                <label for="lengthSlider" class="form-label">Length Range</label>
+                <input id="lengthSlider" type="range" class="form-range" min="30" max="50" step="1">
+            </div>
+            <div>
                 <label for="length" class="form-label">Text Split Length</label>
                 <input id="length" aria-describedby="lengthHelp" type="number" class="form-control" autocomplete="off">
                 <div class="form-text" id="lengthHelp">Line Length.</div>
             </div>
             <div class="mb-2">
-                <label for="text" class="form-label">Example textarea</label>
-                <textarea id="text" class="form-control" rows="6"></textarea>
+                <label for="textInput" class="form-label">Input</label>
+                <textarea id="textInput" class="form-control" rows="2"></textarea>
+            </div>
+            <div class="mb-2">
+                <label for="textOutput" class="form-label">Output</label>
+                <textarea id="textOutput" class="form-control" rows="5"></textarea>
             </div>
             <div>
                 <button id="paste" class="btn btn-info me-2">Paste</button>
@@ -35,7 +43,7 @@
                     </div>
                 </div>
 
-                <button id="undo" class="btn btn-outline-warning me-2">Undo</button>
+<!--                <button id="undo" class="btn btn-outline-warning me-2">Undo</button>-->
                 <button id="copy" class="btn btn-primary me-2">Copy</button>
                 <button id="clear" class="btn btn-outline-danger me-2">Clear</button>
             </div>

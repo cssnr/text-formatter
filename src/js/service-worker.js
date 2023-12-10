@@ -30,6 +30,8 @@ async function onInstalled(details) {
             contextMenu: true,
             showUpdate: false,
             textSplitLength: '30',
+            textSliderMin: '30',
+            textSliderMax: '50',
             textLengths: [],
         })
     )

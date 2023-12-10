@@ -4,16 +4,20 @@ import { processText } from './export.js'
 
 document.addEventListener('DOMContentLoaded', initPage)
 
-document.getElementById('length').addEventListener('change', saveLength)
+const lengthRange = document.getElementById('lengthSlider')
+const lengthInput = document.getElementById('length')
+
+lengthRange.addEventListener('change', saveLength)
+lengthInput.addEventListener('change', saveLength)
 document.getElementById('paste').addEventListener('click', pasteBtn)
-document.getElementById('process').addEventListener('click', processBtn)
+document.getElementById('process').addEventListener('click', processForm)
 document.getElementById('copy').addEventListener('click', copyBtn)
-document.getElementById('undo').addEventListener('click', undoBtn)
+// document.getElementById('undo').addEventListener('click', undoBtn)
 document.getElementById('clear').addEventListener('click', clearBtn)
 
 document.getElementById('length-form').addEventListener('submit', addLength)
 
-let previousText = ''
+// let previousText = ''
 
 /**
  * Initialize Page
@@ -24,6 +28,8 @@ async function initPage() {
     const { options } = await chrome.storage.sync.get(['options'])
     console.log('options:', options)
     document.getElementById('length').value = options.textSplitLength
+    lengthRange.min = options.textSliderMin
+    lengthRange.max = options.textSliderMax
 
     // if (options.textLengths?.length) {
     //     document.getElementById('no-filters').remove()
@@ -44,53 +50,60 @@ function updateLengthsDropdown(lengths) {
     }
 }
 
-async function saveLength() {
-    console.log('save')
-    const length = document.querySelector('input').value
+async function saveLength(event) {
+    console.log('saveLength', event)
+    const length = event.target.value
+    console.log('length', length)
     let { options } = await chrome.storage.sync.get(['options'])
     options.textSplitLength = length
     await chrome.storage.sync.set({ options })
+    lengthRange.value = length
+    lengthInput.value = length
+    await processForm(event)
 }
 
 async function pasteBtn() {
-    console.log('paste')
+    console.log('pasteBtn')
     const clipboardContents = await navigator.clipboard.readText()
     console.log('clipboardContents:', clipboardContents)
-    document.querySelector('textarea').value = clipboardContents
+    document.getElementById('textInput').value = clipboardContents
 }
 
-async function processBtn(event) {
-    console.log('process', event)
+async function processForm(event) {
+    console.log('processForm', event)
     let length
     if (event.target.dataset.pattern) {
         length = event.target.dataset.pattern
     } else {
-        length = document.querySelector('input').value
+        length = event.target.value
     }
     console.log('length:', length)
-    const text = document.querySelector('textarea').value
-    previousText = text
+    const text = document.getElementById('textInput').value
+    console.log('input text:', text)
+    // previousText = text
     const result = processText(text, length)
     console.log(result)
-    document.querySelector('textarea').value = result
+    console.log('output text:', result)
+    document.getElementById('textOutput').value = result
     await navigator.clipboard.writeText(result)
 }
 
 async function copyBtn() {
-    console.log('copy')
+    console.log('copyBtn')
     await navigator.clipboard.writeText(
-        document.querySelector('textarea').value
+        document.getElementById('textOutput').value
     )
 }
 
-async function undoBtn() {
-    console.log('undo')
-    document.querySelector('textarea').value = previousText
-}
+// async function undoBtn() {
+//     console.log('undoBtn')
+//     document.querySelector('textarea').value = previousText
+// }
 
 async function clearBtn() {
-    console.log('clear')
-    document.querySelector('textarea').value = ''
+    console.log('clearBtn')
+    document.querySelector('textInput').value = ''
+    document.querySelector('textOutput').value = ''
 }
 
 /**
@@ -108,7 +121,7 @@ function createFilterLink(number, value = '') {
     a.dataset.pattern = value
     a.classList.add('dropdown-item', 'small')
     a.setAttribute('role', 'button')
-    a.addEventListener('click', processBtn)
+    a.addEventListener('click', processForm)
     li.appendChild(a)
 }
 
