@@ -22,6 +22,13 @@ async function initPage() {
     const { options } = await chrome.storage.sync.get(['options'])
     console.log('options:', options)
     document.getElementById('length').value = options.textSplitLength
+
+    if (options.textLengths?.length) {
+        document.getElementById('no-filters').remove()
+        options.textLengths.forEach(function (value, i) {
+            createFilterLink(i.toString(), value)
+        })
+    }
 }
 
 async function saveLength() {
@@ -39,9 +46,15 @@ async function pasteBtn() {
     document.querySelector('textarea').value = clipboardContents
 }
 
-async function processBtn() {
-    console.log('process')
-    const length = document.querySelector('input').value
+async function processBtn(event) {
+    console.log('process', event)
+    let length
+    if (event.target.dataset.pattern) {
+        length = event.target.dataset.pattern
+    } else {
+        length = document.querySelector('input').value
+    }
+    console.log('length:', length)
     const text = document.querySelector('textarea').value
     previousText = text
     const result = processText(text, length)
@@ -65,4 +78,23 @@ async function undoBtn() {
 async function clearBtn() {
     console.log('clear')
     document.querySelector('textarea').value = ''
+}
+
+/**
+ * Add Form Input for a Filter
+ * @function createFilterLink
+ * @param {String} number
+ * @param {String} value
+ */
+function createFilterLink(number, value = '') {
+    const ul = document.getElementById('filters-ul')
+    const li = document.createElement('li')
+    ul.appendChild(li)
+    const a = document.createElement('a')
+    a.textContent = value
+    a.dataset.pattern = value
+    a.classList.add('dropdown-item', 'small')
+    a.setAttribute('role', 'button')
+    a.addEventListener('click', processBtn)
+    li.appendChild(a)
 }

@@ -30,6 +30,7 @@ async function onInstalled(details) {
             contextMenu: true,
             showUpdate: false,
             textSplitLength: '30',
+            textLengths: [],
         })
     )
     console.log('options:', options)
