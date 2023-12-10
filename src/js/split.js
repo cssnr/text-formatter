@@ -4,9 +4,12 @@ import { processText } from './export.js'
 
 document.addEventListener('DOMContentLoaded', initPage)
 
+const textInput = document.getElementById('textInput')
+const textOutput = document.getElementById('textOutput')
 const lengthRange = document.getElementById('lengthSlider')
 const lengthInput = document.getElementById('length')
 
+textInput.addEventListener('input', processForm)
 lengthRange.addEventListener('input', saveLength)
 lengthInput.addEventListener('input', saveLength)
 
@@ -35,7 +38,8 @@ async function initPage(event) {
     const text = urlParams.get('text')
     console.log('text:', text)
     if (text) {
-        document.getElementById('textInput').value = text
+        textInput.value = text
+        // processInput(event)
         await processForm(event)
     }
     updateLengthsDropdown(options.textLengths)
@@ -43,9 +47,9 @@ async function initPage(event) {
 }
 
 async function saveLength(event) {
-    console.log('saveLength', event)
+    // console.log('saveLength', event)
     const length = event.target.value
-    console.log('length', length)
+    // console.log('length:', length)
     let { options } = await chrome.storage.sync.get(['options'])
     options.textSplitLength = length
     await chrome.storage.sync.set({ options })
@@ -58,40 +62,37 @@ async function pasteBtn() {
     console.log('pasteBtn')
     const clipboardContents = await navigator.clipboard.readText()
     console.log('clipboardContents:', clipboardContents)
-    document.getElementById('textInput').value = clipboardContents
+    textInput.value = clipboardContents
 }
 
 async function processForm(event) {
-    console.log('processForm', event)
+    // console.log('processForm', event)
     let length
     if (event.target.dataset?.pattern) {
         length = event.target.dataset.pattern
-    } else {
+    } else if (parseInt(event.target.value)) {
         length = event.target.value
-    }
-    if (!length) {
+    } else {
         length = lengthInput.value
     }
-    console.log('length:', length)
-    const text = document.getElementById('textInput').value
+    // console.log('length:', length)
+    const text = textInput.value
     // console.log('input text:', text)
     const result = processText(text, length)
     // console.log('output text:', result)
-    document.getElementById('textOutput').value = result
+    textOutput.value = result
     await navigator.clipboard.writeText(result)
 }
 
 async function copyBtn() {
     console.log('copyBtn')
-    await navigator.clipboard.writeText(
-        document.getElementById('textOutput').value
-    )
+    await navigator.clipboard.writeText(textOutput.value)
 }
 
 async function clearBtn() {
     console.log('clearBtn')
-    document.getElementById('textInput').value = ''
-    document.getElementById('textOutput').value = ''
+    textInput.value = ''
+    textOutput.value = ''
 }
 
 /**

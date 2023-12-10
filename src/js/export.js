@@ -8,7 +8,10 @@
  * @return {String}
  */
 export function processText(text, length) {
-    console.log('processText: length:', length)
+    // console.log('processText: length:', length)
+    // console.log('input text:', text)
+    text = text.replace(/\s\s+/g, ' ').replace(/\n+/g, ' ')
+    // console.log('processed text:', text)
     const split = text.split(' ')
     const results = []
     let line = ''
@@ -22,7 +25,9 @@ export function processText(text, length) {
         line += `${word} `
     }
     results.push(line.trim())
-    return results.join('\n')
+    let result = results.join('\n')
+    // console.log('result text:', result)
+    return result
 }
 
 /**
