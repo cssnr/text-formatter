@@ -5,7 +5,7 @@
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/text-formatter?logo=github)](https://github.com/cssnr/text-formatter/releases/latest)
 [![Manifest Version](https://img.shields.io/github/manifest-json/v/cssnr/text-formatter?filename=manifest.json&logo=json&label=manifest)](https://github.com/cssnr/text-formatter/blob/master/manifest.json)
 [![Build](https://github.com/cssnr/text-formatter/actions/workflows/build.yaml/badge.svg)](https://github.com/cssnr/text-formatter/actions/workflows/build.yaml)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=smashedr_web-tools-extension&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=smashedr_web-tools-extension)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_text-formatter&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_text-formatter)
 # Text Formatter
 
 Modern Chrome Web Extension and Firefox Browser Addon for Splitting and Formatting Text.
