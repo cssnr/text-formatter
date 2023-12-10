@@ -1,7 +1,3 @@
-[![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/medimbembaeldnglneiipkenpagjfcdj?logo=google&logoColor=white&label=google%20users)](https://chromewebstore.google.com/detail/text-formatter/medimbembaeldnglneiipkenpagjfcdj)
-[![Mozilla Add-on Users](https://img.shields.io/amo/users/text-formatter?logo=mozilla&label=mozilla%20users)](https://addons.mozilla.org/addon/text-formatter)
-[![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/medimbembaeldnglneiipkenpagjfcdj?label=chrome&logo=googlechrome)](https://chromewebstore.google.com/detail/text-formatter/medimbembaeldnglneiipkenpagjfcdj)
-[![Mozilla Add-on Version](https://img.shields.io/amo/v/text-formatter?label=firefox&logo=firefox)](https://addons.mozilla.org/addon/text-formatter)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/text-formatter?logo=github)](https://github.com/cssnr/text-formatter/releases/latest)
 [![Manifest Version](https://img.shields.io/github/manifest-json/v/cssnr/text-formatter?filename=manifest.json&logo=json&label=manifest)](https://github.com/cssnr/text-formatter/blob/master/manifest.json)
 [![Build](https://github.com/cssnr/text-formatter/actions/workflows/build.yaml/badge.svg)](https://github.com/cssnr/text-formatter/actions/workflows/build.yaml)
@@ -26,14 +22,14 @@ Modern Chrome Web Extension and Firefox Browser Addon for Splitting and Formatti
 [![Vivaldi](https://raw.githubusercontent.com/alrra/browser-logos/main/src/vivaldi/vivaldi_48x48.png)](https://chromewebstore.google.com/detail/text-formatter/medimbembaeldnglneiipkenpagjfcdj)
 [![Opera](https://raw.githubusercontent.com/alrra/browser-logos/main/src/opera/opera_48x48.png)](https://chromewebstore.google.com/detail/text-formatter/medimbembaeldnglneiipkenpagjfcdj)
 
-> [!IMPORTANT]  
-> Firefox is currently only available from a [GitHub Release](https://github.com/cssnr/text-formatter/releases/latest/download/text_formatter-firefox.xpi).
-
 All **Chromium** Based Browsers can install the extension from the
 [Chrome Web Store](https://chromewebstore.google.com/detail/text-formatter/medimbembaeldnglneiipkenpagjfcdj).
 
 *   Download a [Chrome Release](https://github.com/cssnr/text-formatter/releases/latest/download/text_formatter-chrome.crx) from GitHub
 *   Download a [Firefox Release](https://github.com/cssnr/text-formatter/releases/latest/download/text_formatter-firefox.xpi) from GitHub
+
+> [!IMPORTANT]  
+> Firefox is currently only available from a [GitHub Release](https://github.com/cssnr/text-formatter/releases/latest/download/text_formatter-firefox.xpi).
 
 # Features
 
@@ -46,7 +42,7 @@ For any issues, bugs or concerns; please [Open an Issue](https://github.com/cssn
 
 # Configuration
 
-You can pin the Addon by clicking the `Puzzle Piece`, find the Web Extension icon, then;  
+You can pin the Addon by clicking the `Puzzle Piece`, find the Text Formatter icon, then;  
 **Chrome,** click the `Pin` icon.  
 **Firefox,** click the `Settings Wheel` and `Pin to Toolbar`.
 
