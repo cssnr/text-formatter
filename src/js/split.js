@@ -1,4 +1,4 @@
-// JS for text.html
+// JS for split.html
 
 import { processText } from './export.js'
 
@@ -8,17 +8,13 @@ const lengthRange = document.getElementById('lengthSlider')
 const lengthInput = document.getElementById('length')
 
 lengthRange.addEventListener('input', saveLength)
-// lengthRange.addEventListener('change', saveLength)
-lengthInput.addEventListener('change', saveLength)
+lengthInput.addEventListener('input', saveLength)
+
 document.getElementById('paste').addEventListener('click', pasteBtn)
 document.getElementById('process').addEventListener('click', processForm)
 document.getElementById('copy').addEventListener('click', copyBtn)
-// document.getElementById('undo').addEventListener('click', undoBtn)
 document.getElementById('clear').addEventListener('click', clearBtn)
-
 document.getElementById('length-form').addEventListener('submit', addLength)
-
-// let previousText = ''
 
 /**
  * Initialize Page
@@ -29,6 +25,7 @@ async function initPage(event) {
     const { options } = await chrome.storage.sync.get(['options'])
     console.log('options:', options)
     console.log('options.textSplitLength:', options.textSplitLength)
+
     document.getElementById('length').value = options.textSplitLength
     lengthRange.value = options.textSplitLength
     lengthRange.min = options.textSliderMin
@@ -41,24 +38,8 @@ async function initPage(event) {
         document.getElementById('textInput').value = text
         await processForm(event)
     }
-
-    // if (options.textLengths?.length) {
-    //     document.getElementById('no-filters').remove()
-    //     options.textLengths.forEach(function (value, i) {
-    //         createFilterLink(i.toString(), value)
-    //     })
-    // }
     updateLengthsDropdown(options.textLengths)
     updateTable(options.textLengths)
-}
-
-function updateLengthsDropdown(lengths) {
-    if (lengths?.length) {
-        document.getElementById('filters-ul').innerHTML = ''
-        lengths.forEach(function (value, i) {
-            createFilterLink(i.toString(), value)
-        })
-    }
 }
 
 async function saveLength(event) {
@@ -94,7 +75,6 @@ async function processForm(event) {
     console.log('length:', length)
     const text = document.getElementById('textInput').value
     // console.log('input text:', text)
-    // previousText = text
     const result = processText(text, length)
     // console.log('output text:', result)
     document.getElementById('textOutput').value = result
@@ -108,15 +88,19 @@ async function copyBtn() {
     )
 }
 
-// async function undoBtn() {
-//     console.log('undoBtn')
-//     document.querySelector('textarea').value = previousText
-// }
-
 async function clearBtn() {
     console.log('clearBtn')
     document.getElementById('textInput').value = ''
     document.getElementById('textOutput').value = ''
+}
+
+function updateLengthsDropdown(lengths) {
+    if (lengths?.length) {
+        document.getElementById('filters-ul').innerHTML = ''
+        lengths.forEach(function (value, i) {
+            createFilterLink(i.toString(), value)
+        })
+    }
 }
 
 /**
@@ -216,7 +200,7 @@ async function deleteHost(event) {
     const filter = anchor?.dataset?.value
     console.log(`filter: ${filter}`)
     const { options } = await chrome.storage.sync.get(['options'])
-    // console.log('patterns:', patterns)
+    // console.log('options.textLengths:', options.textLengths)
     if (filter && options.textLengths.includes(filter)) {
         const index = options.textLengths.indexOf(filter)
         console.log(`index: ${index}`)

@@ -2,20 +2,10 @@
 
 import { processText } from './export.js'
 
-chrome.runtime.onStartup.addListener(onStartup)
 chrome.runtime.onInstalled.addListener(onInstalled)
 chrome.contextMenus.onClicked.addListener(contextMenusClicked)
 chrome.commands.onCommand.addListener(onCommand)
-chrome.runtime.onMessage.addListener(onMessage)
 chrome.storage.onChanged.addListener(onChanged)
-
-/**
- * On Startup Callback
- * @function onStartup
- */
-function onStartup() {
-    console.log('onStartup')
-}
 
 /**
  * On Install Callback
@@ -24,15 +14,15 @@ function onStartup() {
  */
 async function onInstalled(details) {
     console.log('onInstalled:', details)
-    const githubURL = 'https://github.com/smashedr/web-tools-extension'
+    const githubURL = 'https://github.com/cssnr/text-formatter'
     const options = await Promise.resolve(
         setDefaultOptions({
             contextMenu: true,
             showUpdate: false,
-            textSplitLength: '30',
-            textSliderMin: '30',
-            textSliderMax: '50',
-            textLengths: [],
+            textSplitLength: '50',
+            textSliderMin: '20',
+            textSliderMax: '80',
+            textLengths: ['30', '40', '60', '70'],
         })
     )
     console.log('options:', options)
@@ -40,9 +30,7 @@ async function onInstalled(details) {
         createContextMenus()
     }
     if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
-        // chrome.runtime.openOptionsPage()
-        const url = chrome.runtime.getURL('/html/oninstall.html')
-        await chrome.tabs.create({ url, active: true })
+        chrome.runtime.openOptionsPage()
     } else if (details.reason === chrome.runtime.OnInstalledReason.UPDATE) {
         if (options.showUpdate) {
             const manifest = chrome.runtime.getManifest()
@@ -68,7 +56,7 @@ async function contextMenusClicked(ctx, tab) {
     } else if (ctx.menuItemId === 'open_text') {
         console.log('ctx.selectionText:', ctx.selectionText)
         const text = ctx.selectionText
-        const url = new URL(chrome.runtime.getURL('/html/text.html'))
+        const url = new URL(chrome.runtime.getURL('/html/split.html'))
         url.searchParams.set('text', text)
         await chrome.tabs.create({ active: true, url: url.toString() })
     } else if (ctx.menuItemId === 'split_text') {
@@ -78,18 +66,8 @@ async function contextMenusClicked(ctx, tab) {
         console.log('text:', text)
         await clipboardWrite(text)
     } else if (ctx.menuItemId === 'open_page') {
-        // const views = chrome.extension.getViews()
-        // const result = views.find((item) => item.location.href.endsWith('html/text.html'))
-        // console.log('result:', result)
-        const url = chrome.runtime.getURL('/html/text.html')
+        const url = chrome.runtime.getURL('/html/split.html')
         await chrome.tabs.create({ active: true, url })
-    } else if (ctx.menuItemId === 'open_window') {
-        await chrome.windows.create({
-            type: 'detached_panel',
-            url: '/html/window.html',
-            width: 720,
-            height: 480,
-        })
     } else {
         console.error(`Unknown ctx.menuItemId: ${ctx.menuItemId}`)
     }
@@ -103,28 +81,11 @@ async function contextMenusClicked(ctx, tab) {
 async function onCommand(command) {
     console.log(`onCommand: ${command}`)
     if (command === 'open_page') {
-        const url = chrome.runtime.getURL('/html/text.html')
+        const url = chrome.runtime.getURL('/html/split.html')
         await chrome.tabs.create({ active: true, url })
-    } else if (command === 'open_window') {
-        await chrome.windows.create({
-            type: 'detached_panel',
-            url: '/html/window.html',
-            width: 480,
-            height: 360,
-        })
+    } else {
+        console.error(`Unknown command: ${command}`)
     }
-}
-
-/**
- * Handle Messages
- * @function onMessage
- * @param {Object} message
- * @param {MessageSender} sender
- * @param {Function} sendResponse
- */
-function onMessage(message, sender, sendResponse) {
-    console.log('onMessage: message, sender:', message, sender)
-    sendResponse('success')
 }
 
 /**
@@ -160,10 +121,9 @@ function createContextMenus() {
     const ctx = ['all']
     const contexts = [
         [['selection'], 'open_text', 'normal', 'Open Text in Page'],
-        [['selection'], 'split_text', 'normal', 'Split Text at Saved'],
+        [['selection'], 'split_text', 'normal', 'Split Text and Copy'],
         [['selection'], 'separator-2', 'separator', 'separator'],
-        [ctx, 'open_page', 'normal', 'Main Page'],
-        // [ctx, 'open_window', 'normal', 'Main Window'],
+        [ctx, 'open_page', 'normal', 'Text Split Page'],
         [ctx, 'separator-1', 'separator', 'separator'],
         [ctx, 'options', 'normal', 'Open Options'],
     ]
@@ -211,10 +171,8 @@ async function setDefaultOptions(defaultOptions) {
 async function clipboardWrite(value) {
     console.log('clipboardWrite:', value)
     if (navigator.clipboard) {
-        // Firefox
         await navigator.clipboard.writeText(value)
     } else {
-        // Chrome
         await chrome.offscreen.createDocument({
             url: 'html/offscreen.html',
             reasons: [chrome.offscreen.Reason.CLIPBOARD],

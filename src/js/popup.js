@@ -1,6 +1,6 @@
 // JS for popup.html
 
-import { checkPerms, saveOptions, updateOptions } from './export.js'
+import { saveOptions, updateOptions } from './export.js'
 
 document.addEventListener('DOMContentLoaded', initPopup)
 
@@ -11,10 +11,6 @@ document
     .querySelectorAll('#options-form input')
     .forEach((el) => el.addEventListener('change', saveOptions))
 
-document.getElementById('grant-perms').onclick = grantPermsBtn
-// document.getElementById('revoke-perms').onclick = revokePermsBtn
-document.getElementById('inject-script').onclick = injectScript
-
 /**
  * Initialize Popup
  * @function initPopup
@@ -23,18 +19,9 @@ async function initPopup() {
     console.log('initPopup')
     document.getElementById('version').textContent =
         chrome.runtime.getManifest().version
-
     const { options } = await chrome.storage.sync.get(['options'])
     console.log('options:', options)
     updateOptions(options)
-
-    await checkPerms()
-
-    // const views = chrome.extension.getViews()
-    // console.log('views:', views)
-
-    // const tabs = await chrome.tabs.query({ highlighted: true })
-    // console.log('tabs:', tabs)
 }
 
 /**
@@ -72,50 +59,4 @@ async function popupLinks(event) {
     }
     await chrome.tabs.create({ active: true, url })
     return window.close()
-}
-
-/**
- * Grant Permissions Button Click Callback
- * @function grantPerms
- * @param {Event} event
- */
-function grantPermsBtn(event) {
-    console.log('permissions click:', event)
-    chrome.permissions.request({
-        origins: ['https://*/*', 'http://*/*'],
-    })
-    window.close()
-}
-
-// /**
-//  * Revoke Permissions Button Click Callback
-//  * TODO: Determine how to remove host permissions on chrome
-//  * @function revokePermsBtn
-//  * @param {Event} event
-//  */
-// async function revokePermsBtn(event) {
-//     const permissions = await chrome.permissions.getAll()
-//     console.log('permissions:', permissions)
-//     await chrome.permissions.remove({
-//         origins: permissions.origins,
-//     })
-//     window.close()
-// }
-
-/**
- * Grant Permissions Button Click Callback
- * @function injectScript
- * @param {MouseEvent} event
- */
-async function injectScript(event) {
-    const [tab] = await chrome.tabs.query({ currentWindow: true, active: true })
-    chrome.scripting.executeScript({
-        target: { tabId: tab.id },
-        func: alertFunction,
-    })
-    window.close()
-}
-
-function alertFunction() {
-    alert('Inject Script Success')
 }

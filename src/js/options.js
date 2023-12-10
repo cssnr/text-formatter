@@ -1,12 +1,10 @@
 // JS for options.html
 
-import { checkPerms, saveOptions, updateOptions } from './export.js'
+import { saveOptions, updateOptions } from './export.js'
 
 document.addEventListener('DOMContentLoaded', initOptions)
 
 chrome.storage.onChanged.addListener(onChanged)
-
-document.getElementById('grant-perms').addEventListener('click', grantPermsBtn)
 
 document
     .querySelectorAll('#options-form input')
@@ -14,15 +12,6 @@ document
 document
     .getElementById('options-form')
     .addEventListener('submit', (e) => e.preventDefault())
-
-document.querySelectorAll('[data-href]').forEach((el) =>
-    el.addEventListener('click', async (e) => {
-        console.log('clicked')
-        const url = chrome.runtime.getURL(e.target.dataset.href)
-        await chrome.tabs.create({ active: true, url })
-        window.close()
-    })
-)
 
 /**
  * Initialize Options
@@ -36,13 +25,12 @@ async function initOptions() {
     await setShortcuts({
         mainKey: '_execute_action',
         openPage: 'open_page',
-        showWindow: 'show_window',
+        openSplit: 'open_split',
     })
 
     const { options } = await chrome.storage.sync.get(['options'])
     console.log('options:', options)
     updateOptions(options)
-    await checkPerms()
 }
 
 /**
@@ -59,19 +47,6 @@ function onChanged(changes, namespace) {
             updateOptions(newValue)
         }
     }
-}
-
-/**
- * Grant Permissions Button Click Callback
- * @function grantPermsBtn
- * @param {MouseEvent} event
- */
-async function grantPermsBtn(event) {
-    console.log('grantPermsBtn:', event)
-    await chrome.permissions.request({
-        origins: ['https://*/*', 'http://*/*'],
-    })
-    await checkPerms()
 }
 
 /**

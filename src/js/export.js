@@ -7,7 +7,7 @@
  * @param {String} length
  * @return {String}
  */
-export function processText(text, length = '30') {
+export function processText(text, length) {
     console.log('processText: length:', length)
     const split = text.split(' ')
     const results = []
@@ -22,31 +22,7 @@ export function processText(text, length = '30') {
         line += `${word} `
     }
     results.push(line.trim())
-    const result = results.join('\n')
-    console.log(result)
-    return result
-}
-
-/**
- * Check Host Permissions
- * @function checkPerms
- * @return {Boolean}
- */
-export async function checkPerms() {
-    const hasPermsEl = document.querySelectorAll('.has-perms')
-    const grantPermsEl = document.querySelectorAll('.grant-perms')
-    const hasPerms = await chrome.permissions.contains({
-        origins: ['https://*/*', 'http://*/*'],
-    })
-    console.log('checkPerms:', hasPerms)
-    if (hasPerms) {
-        hasPermsEl.forEach((el) => el.classList.remove('d-none'))
-        grantPermsEl.forEach((el) => el.classList.add('d-none'))
-    } else {
-        grantPermsEl.forEach((el) => el.classList.remove('d-none'))
-        hasPermsEl.forEach((el) => el.classList.add('d-none'))
-    }
-    return hasPerms
+    return results.join('\n')
 }
 
 /**

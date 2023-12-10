@@ -1,9 +1,9 @@
 {
-  "name": "Web Tools Extension",
-  "description": "Web Tools Web Extension and Browser Addon.",
-  "homepage_url": "https://github.com/smashedr",
+  "name": "Text Formatter",
+  "description": "Text Splitting and Formatting Web Extension and Browser Addon.",
+  "homepage_url": "https://github.com/cssnr/text-formatter",
   "author": "Shane",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "manifest_version": 3,
   "commands": {
     "_execute_action": {
@@ -18,7 +18,7 @@
       },
       "description": "Open Split Text Page"
     },
-    "open_window": {
+    "open_split": {
       "suggested_key": {
         "default": "Alt+Shift+W"
       },
@@ -26,18 +26,11 @@
     }
   },
   "permissions": [
-    "activeTab",
     "clipboardRead",
     "clipboardWrite",
     "contextMenus",
     "scripting",
     "storage"
-  ],
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["js/content-script.js"]
-    }
   ],
   "background": {
     "type": "module"
@@ -48,7 +41,7 @@
   },
   "action": {
     "default_popup": "html/popup.html",
-    "default_title": "Web Tools Extension",
+    "default_title": "Text Formatter",
     "default_icon": {
       "16": "images/logo16.png",
       "32": "images/logo32.png",

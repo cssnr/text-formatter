@@ -1,14 +1,14 @@
-[![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/ifefifghpkllfibejafbakmflidjcjfp?logo=google&logoColor=white&label=google%20users)](https://chromewebstore.google.com/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp)
-[![Mozilla Add-on Users](https://img.shields.io/amo/users/link-extractor?logo=mozilla&label=mozilla%20users)](https://addons.mozilla.org/addon/link-extractor)
-[![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/ifefifghpkllfibejafbakmflidjcjfp?label=chrome&logo=googlechrome)](https://chromewebstore.google.com/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp)
-[![Mozilla Add-on Version](https://img.shields.io/amo/v/link-extractor?label=firefox&logo=firefox)](https://addons.mozilla.org/addon/link-extractor)
-[![GitHub Release Version](https://img.shields.io/github/v/release/smashedr/web-tools-extension?logo=github)](https://github.com/smashedr/web-tools-extension/releases/latest)
-[![Manifest Version](https://img.shields.io/github/manifest-json/v/smashedr/web-tools-extension?filename=manifest.json&logo=json&label=manifest)](https://github.com/smashedr/web-tools-extension/blob/master/manifest.json)
-[![Build](https://github.com/smashedr/web-tools-extension/actions/workflows/build.yaml/badge.svg)](https://github.com/smashedr/web-tools-extension/actions/workflows/build.yaml)
+[![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/ifefifghpkllfibejafbakmflidjcjfp?logo=google&logoColor=white&label=google%20users)](https://chromewebstore.google.com/detail/text-formatter/ifefifghpkllfibejafbakmflidjcjfp)
+[![Mozilla Add-on Users](https://img.shields.io/amo/users/text-formatter?logo=mozilla&label=mozilla%20users)](https://addons.mozilla.org/addon/text-formatter)
+[![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/ifefifghpkllfibejafbakmflidjcjfp?label=chrome&logo=googlechrome)](https://chromewebstore.google.com/detail/text-formatter/ifefifghpkllfibejafbakmflidjcjfp)
+[![Mozilla Add-on Version](https://img.shields.io/amo/v/text-formatter?label=firefox&logo=firefox)](https://addons.mozilla.org/addon/text-formatter)
+[![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/text-formatter?logo=github)](https://github.com/cssnr/text-formatter/releases/latest)
+[![Manifest Version](https://img.shields.io/github/manifest-json/v/cssnr/text-formatter?filename=manifest.json&logo=json&label=manifest)](https://github.com/cssnr/text-formatter/blob/master/manifest.json)
+[![Build](https://github.com/cssnr/text-formatter/actions/workflows/build.yaml/badge.svg)](https://github.com/cssnr/text-formatter/actions/workflows/build.yaml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=smashedr_web-tools-extension&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=smashedr_web-tools-extension)
-# Web Tools Extension
+# Text Formatter
 
-Modern Chrome Web Extension and Firefox Browser Addon with various Web Tools.
+Modern Chrome Web Extension and Firefox Browser Addon for Splitting and Formatting Text.
 
 *   [Install](#install)
 *   [Features](#features)
@@ -18,24 +18,28 @@ Modern Chrome Web Extension and Firefox Browser Addon with various Web Tools.
 
 # Install
 
-*   [Google Chrome Web Store](https://chromewebstore.google.com/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp)
-*   [Mozilla Firefox Add-ons](https://addons.mozilla.org/addon/link-extractor)
+*   [Google Chrome Web Store](https://chromewebstore.google.com/detail/text-formatter/ifefifghpkllfibejafbakmflidjcjfp)
+*   [Mozilla Firefox Add-ons](https://addons.mozilla.org/addon/text-formatter)
 
-[![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/main/src/chrome/chrome_48x48.png)](https://chromewebstore.google.com/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp)
-[![Firefox](https://raw.githubusercontent.com/alrra/browser-logos/main/src/firefox/firefox_48x48.png)](https://addons.mozilla.org/addon/link-extractor)
-[![Edge](https://raw.githubusercontent.com/alrra/browser-logos/main/src/edge/edge_48x48.png)](https://chromewebstore.google.com/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp)
-[![Chromium](https://raw.githubusercontent.com/alrra/browser-logos/main/src/chromium/chromium_48x48.png)](https://chromewebstore.google.com/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp)
-[![Brave](https://raw.githubusercontent.com/alrra/browser-logos/main/src/brave/brave_48x48.png)](https://chromewebstore.google.com/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp)
-[![Vivaldi](https://raw.githubusercontent.com/alrra/browser-logos/main/src/vivaldi/vivaldi_48x48.png)](https://chromewebstore.google.com/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp)
-[![Opera](https://raw.githubusercontent.com/alrra/browser-logos/main/src/opera/opera_48x48.png)](https://chromewebstore.google.com/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp)
+[![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/main/src/chrome/chrome_48x48.png)](https://chromewebstore.google.com/detail/text-formatter/ifefifghpkllfibejafbakmflidjcjfp)
+[![Firefox](https://raw.githubusercontent.com/alrra/browser-logos/main/src/firefox/firefox_48x48.png)](https://addons.mozilla.org/addon/text-formatter)
+[![Edge](https://raw.githubusercontent.com/alrra/browser-logos/main/src/edge/edge_48x48.png)](https://chromewebstore.google.com/detail/text-formatter/ifefifghpkllfibejafbakmflidjcjfp)
+[![Chromium](https://raw.githubusercontent.com/alrra/browser-logos/main/src/chromium/chromium_48x48.png)](https://chromewebstore.google.com/detail/text-formatter/ifefifghpkllfibejafbakmflidjcjfp)
+[![Brave](https://raw.githubusercontent.com/alrra/browser-logos/main/src/brave/brave_48x48.png)](https://chromewebstore.google.com/detail/text-formatter/ifefifghpkllfibejafbakmflidjcjfp)
+[![Vivaldi](https://raw.githubusercontent.com/alrra/browser-logos/main/src/vivaldi/vivaldi_48x48.png)](https://chromewebstore.google.com/detail/text-formatter/ifefifghpkllfibejafbakmflidjcjfp)
+[![Opera](https://raw.githubusercontent.com/alrra/browser-logos/main/src/opera/opera_48x48.png)](https://chromewebstore.google.com/detail/text-formatter/ifefifghpkllfibejafbakmflidjcjfp)
 
 All **Chromium** Based Browsers can install the extension from the
-[Chrome Web Store](https://chromewebstore.google.com/detail/link-extractor/ifefifghpkllfibejafbakmflidjcjfp).
+[Chrome Web Store](https://chromewebstore.google.com/detail/text-formatter/ifefifghpkllfibejafbakmflidjcjfp).
 
 # Features
 
-Please submit a [Feature Request](https://github.com/smashedr/web-tools-extension/discussions/categories/feature-requests) for new features.  
-For any issues, bugs or concerns; please [Open an Issue](https://github.com/smashedr/web-tools-extension/issues).
+-   Split Text into Lines with a Slier or Saved Values
+-   Activate from Context Menu, Keyboard Shortcuts or Popup
+-   Automatic Dark/Light Mode based on Browser Appearance Settings
+
+Please submit a [Feature Request](https://github.com/cssnr/text-formatter/discussions/categories/feature-requests) for new features.  
+For any issues, bugs or concerns; please [Open an Issue](https://github.com/cssnr/text-formatter/issues).
 
 # Configuration
 
@@ -95,7 +99,7 @@ For more information on building, see the scripts in the [package.json](package.
 
 ## Chrome Setup
 
-1.  Build or Download a [Release](https://github.com/smashedr/web-tools-extension/releases).
+1.  Build or Download a [Release](https://github.com/cssnr/text-formatter/releases).
 1.  Unzip the archive, place the folder where it must remain and note its location for later.
 1.  Open Chrome, click the `3 dots` in the top right, click `Extensions`, click `Manage Extensions`.
 1.  In the top right, click `Developer Mode` then on the top left click `Load unpacked`.
@@ -106,7 +110,7 @@ For more information on building, see the scripts in the [package.json](package.
 Note: Firefox Temporary addon's will **not** remain after restarting Firefox, therefore;
 it is very useful to keep addon storage after uninstall/restart with `keepStorageOnUninstall`.
 
-1.  Build or Download a [Release](https://github.com/smashedr/web-tools-extension/releases).
+1.  Build or Download a [Release](https://github.com/cssnr/text-formatter/releases).
 1.  Unzip the archive, place the folder where it must remain and note its location for later.
 1.  Go to `about:debugging#/runtime/this-firefox` and click `Load Temporary Add-on...`
 1.  Navigate to the folder you extracted earlier, select `manifest.json` then click `Select File`.

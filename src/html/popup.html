@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Web Tools Extension</title>
+    <title>Text Formatter</title>
     <link rel="icon" href="../images/logo16.png" sizes="any">
     <link rel="stylesheet" type="text/css" href="../dist/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../css/popup.css">
@@ -11,15 +11,7 @@
 
 <div class="container-fluid p-3">
     <div class="d-grid g-2 gap-2">
-        <div class="d-none grant-perms">
-            <a id="grant-perms" class="btn btn-lg btn-success w-100 mb-1" role="button">Grant Host Permissions</a>
-            <p class="text-center"><a role="button" data-href="../html/oninstall.html" class="">More Information on Permissions</a></p>
-        </div>
-<!--        <a id="revoke-perms" class="btn btn-outline-danger d-none has-perms" role="button">Remove Host Permissions</a>-->
-        <a id="inject-script" class="btn btn-outline-warning visually-hidden" role="button">Inject Script</a>
-<!--        <hr class="my-1">-->
-        <a class="btn btn-primary" role="button" data-href="html/text.html">Open Text Page</a>
-        <a class="btn btn-primary visually-hidden" role="button" data-href="open_window">Open Main Window</a>
+        <a class="btn btn-primary" role="button" data-href="html/split.html">Open Text Split Page</a>
     </div>
     <hr>
     <form id="options-form" class="mb-2">
@@ -35,9 +27,9 @@
     <a class="btn btn-outline-info w-100" role="button" data-href="options">Open Options</a>
     <hr>
     <div class=" d-flex justify-content-center align-items-center text-center small">
-        <img src="../images/logo16.png" alt="Web Tools Extension" width="16" height="16">
+        <img src="../images/logo16.png" alt="Text Formatter" width="16" height="16">
         <a class="link-offset-2 link-underline link-underline-opacity-0 link-underline-opacity-75-hover mx-2" type="button" rel="noopener"
-           data-href="homepage">Web Tools Extension</a> v<span id="version"></span>
+           data-href="homepage">Text Formatter</a> v<span id="version"></span>
     </div>
 </div>
 
