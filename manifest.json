@@ -3,7 +3,7 @@
   "description": "Web Tools Web Extension and Browser Addon.",
   "homepage_url": "https://github.com/smashedr",
   "author": "Shane",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "manifest_version": 3,
   "commands": {
     "_execute_action": {

@@ -7,7 +7,8 @@ document.addEventListener('DOMContentLoaded', initPage)
 const lengthRange = document.getElementById('lengthSlider')
 const lengthInput = document.getElementById('length')
 
-lengthRange.addEventListener('change', saveLength)
+lengthRange.addEventListener('input', saveLength)
+// lengthRange.addEventListener('change', saveLength)
 lengthInput.addEventListener('change', saveLength)
 document.getElementById('paste').addEventListener('click', pasteBtn)
 document.getElementById('process').addEventListener('click', processForm)
@@ -102,8 +103,8 @@ async function copyBtn() {
 
 async function clearBtn() {
     console.log('clearBtn')
-    document.querySelector('textInput').value = ''
-    document.querySelector('textOutput').value = ''
+    document.getElementById('textInput').value = ''
+    document.getElementById('textOutput').value = ''
 }
 
 /**
