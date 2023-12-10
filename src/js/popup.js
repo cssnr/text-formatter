@@ -42,14 +42,6 @@ async function popupLinks(event) {
     } else if (anchor?.dataset?.href === 'options') {
         chrome.runtime.openOptionsPage()
         return window.close()
-    } else if (anchor?.dataset?.href === 'open_window') {
-        await chrome.windows.create({
-            type: 'detached_panel',
-            url: '/html/window.html',
-            width: 720,
-            height: 480,
-        })
-        return window.close()
     } else if (anchor?.dataset?.href) {
         url = chrome.runtime.getURL(anchor.dataset.href)
     }

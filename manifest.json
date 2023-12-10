@@ -3,7 +3,7 @@
   "description": "Text Splitting and Formatting Web Extension and Browser Addon.",
   "homepage_url": "https://github.com/cssnr/text-formatter",
   "author": "Shane",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "manifest_version": 3,
   "commands": {
     "_execute_action": {
@@ -17,12 +17,6 @@
         "default": "Alt+Shift+X"
       },
       "description": "Open Split Text Page"
-    },
-    "open_split": {
-      "suggested_key": {
-        "default": "Alt+Shift+W"
-      },
-      "description": "Open Extension Window"
     }
   },
   "permissions": ["clipboardRead", "clipboardWrite", "contextMenus", "storage"],

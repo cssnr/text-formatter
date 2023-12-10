@@ -1,46 +1,63 @@
-name: "Build"
+name: 'Build'
 
 on:
   workflow_dispatch:
   release:
     types: [published]
 
+env:
+  SRC_DIR: src
+  CHROME_ID: medimbembaeldnglneiipkenpagjfcdj
+  MOZILLA_ID: web-tools-extension@cssnr.com
+
 jobs:
   build:
-    name: "Build"
+    name: 'Build'
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
+    outputs:
+      version: ${{ steps.manifest.outputs.version }}
+      package_name: ${{ steps.manifest.outputs.package_name }}
+
     steps:
-      - name: "Checkout"
+      - name: 'Checkout'
         uses: actions/checkout@v3
 
-      - name: "Release Version Check"
+      - name: 'Parse Manifest'
+        id: manifest
+        run: |-
+          echo "version=$(jq '.version' < manifest.json | tr -d '"')" >> "$GITHUB_OUTPUT"
+          export name="$(jq '.name' < manifest.json | tr -d '"' | tr '[:upper:]' '[:lower:]')"
+          echo "package_name=${name// /_}" >> "$GITHUB_OUTPUT"
+
+      - name: 'Release Version Check'
         if: ${{ github.event_name == 'release' }}
-        run: |
-          export version="$(jq '.version' < manifest.json | tr -d '"')"
-          if [ "${{ github.ref_name }}" != "${version}" ];then
+        run: |-
+          echo ${{ github.ref_name }}
+          echo ${{ steps.manifest.outputs.version }}
+          if [ "${{ github.ref_name }}" != "${{ steps.manifest.outputs.version }}" ];then
             echo "Manifest Version ${version} does not match release tag ${{ github.ref_name }}"
             exit 1
           fi
 
-      - name: "Setup Node"
+      - name: 'Setup Node'
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      - name: "Build All"
-        run: |
+      - name: 'Build All'
+        run: |-
           npm install
           npm run build
 
-      - name: "Upload to Actions"
+      - name: 'Upload to Actions'
         uses: actions/upload-artifact@v3
         with:
           name: artifacts
           path: web-ext-artifacts/
 
-      - name: "Upload to Release"
+      - name: 'Upload to Release'
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -48,3 +65,74 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
+
+  publish-mozilla:
+    name: 'Publish Mozilla'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: [build]
+    if: ${{ github.event_name == 'release' }}
+
+    steps:
+      - name: 'Download Artifacts'
+        uses: actions/download-artifact@v3
+        with:
+          name: artifacts
+
+      - name: 'Sign Mozilla Addon'
+        run: |-
+          unzip *firefox* -d src
+          npx web-ext sign --api-key="${{ secrets.FIREFOX_API_KEY }}" \
+            --api-secret="${{ secrets.FIREFOX_API_SECRET }}" \
+            --source-dir "src"
+
+      - name: 'Rename Signed Artifact'
+        working-directory: web-ext-artifacts
+        run: |-
+          ls -l .
+          mv *.xpi "${{ needs.build.outputs.package_name }}-firefox.xpi"
+          ls -l .
+
+      - name: 'Upload to Actions'
+        uses: actions/upload-artifact@v3
+        with:
+          name: signed
+          path: web-ext-artifacts/
+
+      - name: 'Upload to Release'
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: web-ext-artifacts/*
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
+
+  update-mozilla:
+    name: 'Update Mozilla'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: [publish-mozilla]
+    if: ${{ github.event_name == 'release' }}
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v3
+
+      - name: 'Mozilla Addon Update'
+        uses: cssnr/mozilla-addon-update-action@master
+        with:
+          url: 'https://github.com/cssnr/text-formatter/releases/download/{version}/text_formatter-firefox.xpi'
+          addon_id: ${{ env.MOZILLA_ID }}
+
+      - name: 'Commit files'
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -a -m "Update update.json"
+
+      - name: 'Push changes'
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: master

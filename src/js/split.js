@@ -94,6 +94,32 @@ async function clearBtn() {
     document.getElementById('textOutput').value = ''
 }
 
+/**
+ * Add Length Submit
+ * @function addLength
+ * @param {SubmitEvent} event
+ */
+async function addLength(event) {
+    // console.log('addFilter:', event)
+    event.preventDefault()
+    const element = document.querySelector('#length-form input')
+    const filter = element.value
+    if (filter) {
+        console.log(`filter: ${filter}`)
+        const { options } = await chrome.storage.sync.get(['options'])
+        if (!options.textLengths.includes(filter)) {
+            options.textLengths.push(filter)
+            options.textLengths.sort()
+            console.log('options.textLengths:', options.textLengths)
+            await chrome.storage.sync.set({ options })
+            updateTable(options.textLengths)
+            updateLengthsDropdown(options.textLengths)
+        }
+    }
+    element.value = ''
+    element.focus()
+}
+
 function updateLengthsDropdown(lengths) {
     if (lengths?.length) {
         document.getElementById('filters-ul').innerHTML = ''
@@ -120,32 +146,6 @@ function createFilterLink(number, value = '') {
     a.setAttribute('role', 'button')
     a.addEventListener('click', processForm)
     li.appendChild(a)
-}
-
-/**
- * Add Length Submit
- * @function addLength
- * @param {SubmitEvent} event
- */
-async function addLength(event) {
-    // console.log('addFilter:', event)
-    event.preventDefault()
-    const element = document.querySelector('#length-form input')
-    const filter = element.value
-    if (filter) {
-        console.log(`filter: ${filter}`)
-        const { options } = await chrome.storage.sync.get(['options'])
-        if (!options.textLengths.includes(filter)) {
-            options.textLengths.push(filter)
-            options.textLengths.sort()
-            console.log('options.textLengths:', options.textLengths)
-            await chrome.storage.sync.set({ options })
-            updateTable(options.textLengths)
-            updateLengthsDropdown(options.textLengths)
-        }
-    }
-    element.value = ''
-    element.focus()
 }
 
 /**
