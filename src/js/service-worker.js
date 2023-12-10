@@ -31,12 +31,14 @@ async function onInstalled(details) {
     }
     if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
         chrome.runtime.openOptionsPage()
+        const url = chrome.runtime.getURL('/html/split.html')
+        await chrome.tabs.create({ active: false, url })
     } else if (details.reason === chrome.runtime.OnInstalledReason.UPDATE) {
         if (options.showUpdate) {
             const manifest = chrome.runtime.getManifest()
             if (manifest.version !== details.previousVersion) {
                 const url = `${githubURL}/releases/tag/${manifest.version}`
-                await chrome.tabs.create({ url, active: false })
+                await chrome.tabs.create({ active: false, url })
             }
         }
     }
