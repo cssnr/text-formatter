@@ -5,6 +5,10 @@
         {
           "version": "0.1.1",
           "update_link": "https://github.com/cssnr/text-formatter/releases/download/0.1.1/text_formatter-firefox.xpi"
+        },
+        {
+          "version": "0.1.2",
+          "update_link": "https://github.com/cssnr/text-formatter/releases/download/0.1.2/text_formatter-firefox.xpi"
         }
       ]
     }
