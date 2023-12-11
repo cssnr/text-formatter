@@ -66,7 +66,7 @@ async function pasteBtn(event) {
         textInput.value = clipboardContents
         await processForm(event)
     } catch (error) {
-        console.warn(error)
+        console.log(error)
         showToast('Clipboard Permissions Required.', 'danger')
     }
 }
