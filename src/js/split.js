@@ -25,6 +25,8 @@ document.getElementById('length-form').addEventListener('submit', addLength)
  */
 async function initPage(event) {
     console.log('initPage')
+    // const perms = await chrome.permissions.query({ name: 'clipboard-write' })
+    // console.log('perms:', perms)
     const { options } = await chrome.storage.sync.get(['options'])
     console.log('options:', options)
     console.log('options.textSplitLength:', options.textSplitLength)
@@ -66,8 +68,8 @@ async function pasteBtn(event) {
         textInput.value = clipboardContents
         await processForm(event)
     } catch (error) {
+        showToast('Clipboard Read Failed!', 'danger')
         console.log(error)
-        showToast('Clipboard Permissions Required.', 'danger')
     }
 }
 
@@ -84,15 +86,15 @@ async function processForm(event) {
     // console.log('length:', length)
     const text = textInput.value
     // console.log('input text:', text)
-    const result = processText(text, length)
+    // const result = processText(text, length)
     // console.log('output text:', result)
-    textOutput.value = result
-    await navigator.clipboard.writeText(result)
+    textOutput.value = processText(text, length)
+    // await writeText(result)
 }
 
 async function copyBtn() {
     console.log('copyBtn')
-    await navigator.clipboard.writeText(textOutput.value)
+    await writeText(textOutput.value)
 }
 
 async function clearBtn() {
@@ -169,7 +171,7 @@ function updateTable(data) {
         const row = tbody.insertRow()
 
         const deleteBtn = document.createElement('a')
-        const svg = document.getElementById('bi-trash3').cloneNode(true)
+        const svg = document.querySelector('.bi-trash3').cloneNode(true)
         deleteBtn.appendChild(svg)
         deleteBtn.title = 'Delete'
         deleteBtn.dataset.value = value
@@ -224,6 +226,16 @@ async function deleteHost(event) {
     updateLengthsDropdown(options.textLengths)
 }
 
+async function writeText(text) {
+    try {
+        await navigator.clipboard.writeText(text)
+        showToast('Text Copied.', 'success')
+    } catch (error) {
+        console.log(error)
+        showToast('Clipboard Write Failed!', 'danger')
+    }
+}
+
 /**
  * Show Bootstrap Toast
  * @function showToast
@@ -234,6 +246,7 @@ function showToast(message, bsClass = 'success') {
     const element = document.getElementById('toast').cloneNode(true)
     element.classList.add(`text-bg-${bsClass}`)
     element.querySelector('.toast-body').innerText = message
+    element.removeAttribute('id')
     document.getElementById('toast-container').appendChild(element)
     const toast = new bootstrap.Toast(element)
     toast.show()
