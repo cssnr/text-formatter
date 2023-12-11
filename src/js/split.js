@@ -10,8 +10,10 @@ const lengthRange = document.getElementById('lengthSlider')
 const lengthInput = document.getElementById('length')
 
 textInput.addEventListener('input', processForm)
-lengthRange.addEventListener('input', saveLength)
-lengthInput.addEventListener('input', saveLength)
+lengthRange.addEventListener('change', saveLength)
+lengthRange.addEventListener('input', processForm)
+lengthInput.addEventListener('change', saveLength)
+lengthInput.addEventListener('input', processForm)
 
 document.getElementById('paste').addEventListener('click', pasteBtn)
 document.getElementById('process').addEventListener('click', processForm)
@@ -49,7 +51,7 @@ async function initPage(event) {
 }
 
 async function saveLength(event) {
-    // console.log('saveLength', event)
+    console.log('saveLength', event)
     const length = event.target.value
     // console.log('length:', length)
     let { options } = await chrome.storage.sync.get(['options'])
@@ -57,7 +59,7 @@ async function saveLength(event) {
     await chrome.storage.sync.set({ options })
     lengthRange.value = length
     lengthInput.value = length
-    await processForm(event)
+    // await processForm(event)
 }
 
 async function pasteBtn(event) {
@@ -84,10 +86,10 @@ async function processForm(event) {
         length = lengthInput.value
     }
     // console.log('length:', length)
+    lengthRange.value = length
+    lengthInput.value = length
     const text = textInput.value
-    // console.log('input text:', text)
-    // const result = processText(text, length)
-    // console.log('output text:', result)
+    // console.log('text:', text)
     textOutput.value = processText(text, length)
     // await writeText(result)
 }
