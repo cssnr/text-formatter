@@ -10,8 +10,10 @@ const lengthRange = document.getElementById('lengthSlider')
 const lengthInput = document.getElementById('length')
 
 textInput.addEventListener('input', processForm)
-lengthRange.addEventListener('input', saveLength)
-lengthInput.addEventListener('input', saveLength)
+lengthRange.addEventListener('change', saveLength)
+lengthRange.addEventListener('input', processForm)
+lengthInput.addEventListener('change', saveLength)
+lengthInput.addEventListener('input', processForm)
 
 document.getElementById('paste').addEventListener('click', pasteBtn)
 document.getElementById('process').addEventListener('click', processForm)
@@ -25,23 +27,19 @@ document.getElementById('length-form').addEventListener('submit', addLength)
  */
 async function initPage(event) {
     console.log('initPage')
-    // const perms = await chrome.permissions.query({ name: 'clipboard-write' })
-    // console.log('perms:', perms)
     const { options } = await chrome.storage.sync.get(['options'])
     console.log('options:', options)
-    console.log('options.textSplitLength:', options.textSplitLength)
 
-    document.getElementById('length').value = options.textSplitLength
+    lengthInput.value = options.textSplitLength
     lengthRange.value = options.textSplitLength
     lengthRange.min = options.textSliderMin
     lengthRange.max = options.textSliderMax
 
     const urlParams = new URLSearchParams(window.location.search)
     const text = urlParams.get('text')
-    console.log('text:', text)
     if (text) {
+        console.log('text:', text)
         textInput.value = text
-        // processInput(event)
         await processForm(event)
     }
     updateLengthsDropdown(options.textLengths)
@@ -57,7 +55,6 @@ async function saveLength(event) {
     await chrome.storage.sync.set({ options })
     lengthRange.value = length
     lengthInput.value = length
-    await processForm(event)
 }
 
 async function pasteBtn(event) {
@@ -84,10 +81,10 @@ async function processForm(event) {
         length = lengthInput.value
     }
     // console.log('length:', length)
+    lengthRange.value = length
+    lengthInput.value = length
     const text = textInput.value
-    // console.log('input text:', text)
-    // const result = processText(text, length)
-    // console.log('output text:', result)
+    // console.log('text:', text)
     textOutput.value = processText(text, length)
     // await writeText(result)
 }
@@ -204,7 +201,7 @@ function updateTable(data) {
  * @param {MouseEvent} event
  */
 async function deleteHost(event) {
-    console.log('deleteHost:', event)
+    // console.log('deleteHost:', event)
     event.preventDefault()
     const anchor = event.target.closest('a')
     const filter = anchor?.dataset?.value

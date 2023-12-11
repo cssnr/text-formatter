@@ -1,3 +1,5 @@
+[![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/medimbembaeldnglneiipkenpagjfcdj?label=chrome&logo=googlechrome)](https://chromewebstore.google.com/detail/text-formatter/medimbembaeldnglneiipkenpagjfcdj)
+[![Mozilla Add-on Version](https://img.shields.io/github/v/release/cssnr/text-formatter?label=firefox&logo=firefox)](https://github.com/cssnr/text-formatter/releases/latest/download/text_formatter-firefox.xpi)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/text-formatter?logo=github)](https://github.com/cssnr/text-formatter/releases/latest)
 [![Manifest Version](https://img.shields.io/github/manifest-json/v/cssnr/text-formatter?filename=manifest.json&logo=json&label=manifest)](https://github.com/cssnr/text-formatter/blob/master/manifest.json)
 [![Build](https://github.com/cssnr/text-formatter/actions/workflows/build.yaml/badge.svg)](https://github.com/cssnr/text-formatter/actions/workflows/build.yaml)
