@@ -25,46 +25,60 @@
             <div class="btn-group" role="group">
                 <a role="button" class="btn btn-outline-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Length</a>
                 <ul id="filters-ul" class="dropdown-menu">
-                    <li id="no-filters"><a class="dropdown-item" href="../html/options.html" target="_blank">No Saved Filters</a></li>
+                    <li id="no-filters"><a class="dropdown-item" href="../html/options.html" target="_blank">No Saved Lengths</a></li>
                 </ul>
             </div>
         </div>
         <button id="copy" class="btn btn-primary me-2">Copy</button>
         <button id="clear" class="btn btn-outline-danger me-2">Clear</button>
 
-        <label for="lengthSlider" class="form-label visually-hidden">Length Range</label>
-        <input id="lengthSlider" type="range" class="form-range me-2" step="1">
-
         <label for="length" class="form-label visually-hidden">Length Input</label>
-        <input id="length" type="number" class="form-control" autocomplete="off" style="max-width: 100px;">
+        <input id="length" type="number" class="form-control me-2" autocomplete="off" style="max-width: 100px;">
+
+        <label for="lengthSlider" class="form-label visually-hidden">Length Range</label>
+        <input id="lengthSlider" type="range" class="form-range" step="1">
     </div>
     <hr>
-    <form id="length-form">
-        <div class="input-group mb-3">
-            <input type="number" class="form-control" placeholder="Add Length" aria-label="Filter" id="add-length" aria-describedby="add-length-btn">
-            <button class="btn btn-outline-success" type="submit" id="add-length-btn">Add</button>
+    <div class="row">
+        <div class="col-xl-4 col-lg-6 col-md-8 col-sm-10 col-12">
+            <form id="length-form">
+                <div class="input-group mb-3">
+                    <input type="number" class="form-control" placeholder="Add Length" aria-label="Filter" id="add-length" aria-describedby="add-length-btn">
+                    <button class="btn btn-outline-success" type="submit" id="add-length-btn">Add</button>
+                </div>
+            </form>
+            <div class="table-responsive">
+                <table id="filters-table" class="table table-sm table-hover bg-transparent">
+                    <caption>Saved Lengths</caption>
+                    <thead><tr>
+                        <th scope="col" class="text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+                            </svg>
+                        </th>
+                        <th scope="col">Length</th>
+                    </tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
-    </form>
-    <div class="table-responsive">
-        <table id="filters-table" class="table table-sm table-hover bg-transparent">
-            <caption>Saved Lengths</caption>
-            <thead><tr>
-                <th scope="col" class="text-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                        <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
-                    </svg>
-                </th>
-                <th scope="col">Filter</th>
-            </tr></thead>
-            <tbody></tbody>
-        </table>
     </div>
+</div>
+
+<div id="bottom-container" class="position-fixed bottom-0 end-0 p-3">
+    <div id="toast-container" class=""></div>
 </div>
 
 <div class="d-none">
     <svg id="bi-trash3" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
         <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
     </svg>
+    <div id="toast" class="toast align-items-center border-0 mt-3" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">Toast Body</div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript" src="../dist/jquery/jquery.min.js"></script>
