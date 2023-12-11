@@ -27,23 +27,19 @@ document.getElementById('length-form').addEventListener('submit', addLength)
  */
 async function initPage(event) {
     console.log('initPage')
-    // const perms = await chrome.permissions.query({ name: 'clipboard-write' })
-    // console.log('perms:', perms)
     const { options } = await chrome.storage.sync.get(['options'])
     console.log('options:', options)
-    console.log('options.textSplitLength:', options.textSplitLength)
 
-    document.getElementById('length').value = options.textSplitLength
+    lengthInput.value = options.textSplitLength
     lengthRange.value = options.textSplitLength
     lengthRange.min = options.textSliderMin
     lengthRange.max = options.textSliderMax
 
     const urlParams = new URLSearchParams(window.location.search)
     const text = urlParams.get('text')
-    console.log('text:', text)
     if (text) {
+        console.log('text:', text)
         textInput.value = text
-        // processInput(event)
         await processForm(event)
     }
     updateLengthsDropdown(options.textLengths)
@@ -51,7 +47,7 @@ async function initPage(event) {
 }
 
 async function saveLength(event) {
-    console.log('saveLength', event)
+    // console.log('saveLength', event)
     const length = event.target.value
     // console.log('length:', length)
     let { options } = await chrome.storage.sync.get(['options'])
@@ -59,7 +55,6 @@ async function saveLength(event) {
     await chrome.storage.sync.set({ options })
     lengthRange.value = length
     lengthInput.value = length
-    // await processForm(event)
 }
 
 async function pasteBtn(event) {
@@ -206,7 +201,7 @@ function updateTable(data) {
  * @param {MouseEvent} event
  */
 async function deleteHost(event) {
-    console.log('deleteHost:', event)
+    // console.log('deleteHost:', event)
     event.preventDefault()
     const anchor = event.target.closest('a')
     const filter = anchor?.dataset?.value
