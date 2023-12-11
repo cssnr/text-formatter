@@ -58,11 +58,17 @@ async function saveLength(event) {
     await processForm(event)
 }
 
-async function pasteBtn() {
+async function pasteBtn(event) {
     console.log('pasteBtn')
-    const clipboardContents = await navigator.clipboard.readText()
-    console.log('clipboardContents:', clipboardContents)
-    textInput.value = clipboardContents
+    try {
+        const clipboardContents = await navigator.clipboard.readText()
+        console.log('clipboardContents:', clipboardContents)
+        textInput.value = clipboardContents
+        await processForm(event)
+    } catch (error) {
+        console.warn(error)
+        showToast('Clipboard Permissions Required.', 'danger')
+    }
 }
 
 async function processForm(event) {
@@ -115,6 +121,7 @@ async function addLength(event) {
             await chrome.storage.sync.set({ options })
             updateTable(options.textLengths)
             updateLengthsDropdown(options.textLengths)
+            showToast(`Added Length: ${filter}`, 'success')
         }
     }
     element.value = ''
@@ -211,7 +218,23 @@ async function deleteHost(event) {
             console.log('options.textLengths:', options.textLengths)
             updateTable(options.textLengths)
             document.getElementById('add-length').focus()
+            showToast(`Removed Length: ${filter}`, 'warning')
         }
     }
     updateLengthsDropdown(options.textLengths)
+}
+
+/**
+ * Show Bootstrap Toast
+ * @function showToast
+ * @param {String} message
+ * @param {String} bsClass
+ */
+function showToast(message, bsClass = 'success') {
+    const element = document.getElementById('toast').cloneNode(true)
+    element.classList.add(`text-bg-${bsClass}`)
+    element.querySelector('.toast-body').innerText = message
+    document.getElementById('toast-container').appendChild(element)
+    const toast = new bootstrap.Toast(element)
+    toast.show()
 }
