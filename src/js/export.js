@@ -25,9 +25,10 @@ export function processText(text, length) {
         line += `${word} `
     }
     results.push(line.trim())
-    let result = results.join('\n')
+    return results.join('\n').trim()
+    // let result = results.join('\n').trim()
     // console.log('result text:', result)
-    return result
+    // return result
 }
 
 /**

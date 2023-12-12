@@ -19,6 +19,7 @@ document.getElementById('paste').addEventListener('click', pasteBtn)
 document.getElementById('process').addEventListener('click', processForm)
 document.getElementById('copy').addEventListener('click', copyBtn)
 document.getElementById('clear').addEventListener('click', clearBtn)
+document.getElementById('readOnly').addEventListener('change', toggleReadOnly)
 document.getElementById('length-form').addEventListener('submit', addLength)
 
 /**
@@ -38,7 +39,7 @@ async function initPage(event) {
     const urlParams = new URLSearchParams(window.location.search)
     const text = urlParams.get('text')
     if (text) {
-        console.log('text:', text)
+        console.log('urlParams text:', text)
         textInput.value = text
         await processForm(event)
     }
@@ -50,11 +51,15 @@ async function saveLength(event) {
     // console.log('saveLength', event)
     const length = event.target.value
     // console.log('length:', length)
-    let { options } = await chrome.storage.sync.get(['options'])
-    options.textSplitLength = length
-    await chrome.storage.sync.set({ options })
     lengthRange.value = length
     lengthInput.value = length
+    try {
+        let { options } = await chrome.storage.sync.get(['options'])
+        options.textSplitLength = length
+        await chrome.storage.sync.set({ options })
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 async function pasteBtn(event) {
@@ -73,11 +78,14 @@ async function pasteBtn(event) {
 async function processForm(event) {
     // console.log('processForm', event)
     let length
-    if (event.target.dataset?.pattern) {
+    if (event.target?.dataset?.pattern) {
+        // console.log('FROM: event.target.dataset.pattern')
         length = event.target.dataset.pattern
-    } else if (parseInt(event.target.value)) {
+    } else if (event.target.classList?.contains('length')) {
+        // console.log('FROM: event.target.value')
         length = event.target.value
     } else {
+        // console.log('FROM: lengthInput.value')
         length = lengthInput.value
     }
     // console.log('length:', length)
@@ -85,8 +93,13 @@ async function processForm(event) {
     lengthInput.value = length
     const text = textInput.value
     // console.log('text:', text)
-    textOutput.value = processText(text, length)
+    const result = processText(text, length)
+    textOutput.value = result
     // await writeText(result)
+    document.getElementById('charsCount').textContent = result.length.toString()
+    document.getElementById('linesCount').textContent = result
+        .split(/\r\n?|\n/g)
+        .length.toString()
 }
 
 async function copyBtn() {
@@ -98,6 +111,16 @@ async function clearBtn() {
     console.log('clearBtn')
     textInput.value = ''
     textOutput.value = ''
+}
+
+function toggleReadOnly(event) {
+    if (event.target.checked) {
+        console.log('readonly = true')
+        textOutput.setAttribute('readonly', 'readonly')
+    } else {
+        console.log('removeAttribute readonly')
+        textOutput.removeAttribute('readonly')
+    }
 }
 
 /**

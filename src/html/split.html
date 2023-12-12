@@ -4,6 +4,7 @@
     <title>Text Formatter</title>
     <link rel="icon" href="../images/logo16.png" sizes="any">
     <link rel="stylesheet" type="text/css" href="../dist/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/split.css">
     <script type="text/javascript" src="../js/theme.js"></script>
 </head>
 <body>
@@ -12,31 +13,37 @@
     <h1>Split Text</h1>
     <div class="mb-2">
         <label for="textInput" class="form-label visually-hidden">Input</label>
-        <textarea id="textInput" class="form-control" rows="2" placeholder="Input Text"></textarea>
+        <textarea id="textInput" class="form-control" rows="4" placeholder="Input Text"></textarea>
     </div>
     <div class="mb-2">
         <label for="textOutput" class="form-label visually-hidden">Output</label>
-        <textarea id="textOutput" class="form-control" rows="5" placeholder="Output Text" readonly></textarea>
-    </div>
-    <div class="d-flex align-items-center mb-2">
-        <button id="paste" class="btn btn-outline-info me-2">Paste</button>
-        <div class="btn-group  me-2" role="group" aria-label="Button group with nested dropdown">
-            <button id="process" type="button" class="btn btn-success" data-filter="">Process</button>
-            <div class="btn-group" role="group">
-                <a role="button" class="btn btn-outline-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Length</a>
-                <ul id="filters-ul" class="dropdown-menu">
-                    <li id="no-filters"><a class="dropdown-item" href="../html/options.html" target="_blank">No Saved Lengths</a></li>
-                </ul>
-            </div>
+        <textarea id="textOutput" class="form-control" rows="6" placeholder="Output Text" readonly="readonly"></textarea>
+        <span id="outputSpan" class="float-end label label-default">
+            <span id="charsCount">0</span> Chars / <span id="linesCount">1</span> Lines
+        </span>
+        <div class="float-end label label-default">
+            <label class="form-check-label" for="readOnly">readonly</label>
+            <input class="form-check-input" type="checkbox" id="readOnly" checked>
         </div>
-        <button id="copy" class="btn btn-primary me-2">Copy</button>
-        <button id="clear" class="btn btn-outline-danger me-2">Clear</button>
-
+    </div>
+    <button id="paste" class="btn btn-outline-info  mb-2 me-2">Paste</button>
+    <div class="btn-group  mb-2 me-2" role="group" aria-label="Button group with nested dropdown">
+        <button id="process" type="button" class="btn btn-success" data-filter="">Process</button>
+        <div class="btn-group" role="group">
+            <a role="button" class="btn btn-outline-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Length</a>
+            <ul id="filters-ul" class="dropdown-menu">
+                <li id="no-filters"><a class="dropdown-item" href="../html/options.html" target="_blank">No Saved Lengths</a></li>
+            </ul>
+        </div>
+    </div>
+    <button id="copy" class="btn btn-primary mb-2 me-2">Copy</button>
+    <button id="clear" class="btn btn-outline-danger mb-2 me-2">Clear</button>
+    <div class="d-flex align-items-center">
         <label for="length" class="form-label visually-hidden">Length Input</label>
-        <input id="length" type="number" class="form-control me-2" autocomplete="off" style="max-width: 100px;">
+        <input id="length" type="number" class="form-control me-2 length" autocomplete="off" style="max-width: 100px;">
 
         <label for="lengthSlider" class="form-label visually-hidden">Length Range</label>
-        <input id="lengthSlider" type="range" class="form-range" step="1">
+        <input id="lengthSlider" type="range" class="form-range length" step="1">
     </div>
     <hr>
     <div class="row">
