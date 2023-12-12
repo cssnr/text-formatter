@@ -39,7 +39,7 @@ async function initPage(event) {
     const urlParams = new URLSearchParams(window.location.search)
     const text = urlParams.get('text')
     if (text) {
-        console.log('text:', text)
+        console.log('urlParams text:', text)
         textInput.value = text
         await processForm(event)
     }
@@ -51,11 +51,15 @@ async function saveLength(event) {
     // console.log('saveLength', event)
     const length = event.target.value
     // console.log('length:', length)
-    let { options } = await chrome.storage.sync.get(['options'])
-    options.textSplitLength = length
-    await chrome.storage.sync.set({ options })
     lengthRange.value = length
     lengthInput.value = length
+    try {
+        let { options } = await chrome.storage.sync.get(['options'])
+        options.textSplitLength = length
+        await chrome.storage.sync.set({ options })
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 async function pasteBtn(event) {
@@ -74,11 +78,14 @@ async function pasteBtn(event) {
 async function processForm(event) {
     // console.log('processForm', event)
     let length
-    if (event.target.dataset?.pattern) {
+    if (event.target?.dataset?.pattern) {
+        // console.log('FROM: event.target.dataset.pattern')
         length = event.target.dataset.pattern
-    } else if (parseInt(event.target.value)) {
+    } else if (event.target.classList?.contains('length')) {
+        // console.log('FROM: event.target.value')
         length = event.target.value
     } else {
+        // console.log('FROM: lengthInput.value')
         length = lengthInput.value
     }
     // console.log('length:', length)
