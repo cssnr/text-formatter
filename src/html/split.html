@@ -18,22 +18,20 @@
     <div class="mb-2">
         <label for="textOutput" class="form-label visually-hidden">Output</label>
         <textarea id="textOutput" class="form-control" rows="6" placeholder="Output Text" readonly="readonly"></textarea>
-        <span id="outputSpan" class="float-end label label-default">
-            <span id="charsCount">0</span> Chars / <span id="linesCount">1</span> Lines
+        <span id="outputSpan" class="float-end small text-warning-emphasis">
+            <span id="charsCount">0</span> chars / <span id="wordsCount">0</span> words / <span id="linesCount">0</span> lines
         </span>
-        <div class="float-end label label-default">
+        <div class="float-end">
             <label class="form-check-label" for="readOnly">readonly</label>
             <input class="form-check-input" type="checkbox" id="readOnly" checked>
         </div>
     </div>
     <button id="paste" class="btn btn-outline-info  mb-2 me-2">Paste</button>
     <div class="btn-group  mb-2 me-2" role="group" aria-label="Button group with nested dropdown">
-        <button id="process" type="button" class="btn btn-success" data-filter="">Process</button>
+        <button id="process" type="button" class="btn btn-success">Process</button>
         <div class="btn-group" role="group">
             <a role="button" class="btn btn-outline-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Length</a>
-            <ul id="filters-ul" class="dropdown-menu">
-                <li id="no-filters"><a class="dropdown-item" href="../html/options.html" target="_blank">No Saved Lengths</a></li>
-            </ul>
+            <ul id="lengths-ul" class="dropdown-menu"></ul>
         </div>
     </div>
     <button id="copy" class="btn btn-primary mb-2 me-2">Copy</button>
@@ -50,12 +48,12 @@
         <div class="col-xl-4 col-lg-6 col-md-8 col-sm-10 col-12">
             <form id="length-form">
                 <div class="input-group mb-3">
-                    <input type="number" class="form-control" placeholder="Add Length" aria-label="Filter" id="add-length" aria-describedby="add-length-btn">
+                    <input type="number" class="form-control" placeholder="Add Length" aria-label="Length" id="add-length" aria-describedby="add-length-btn">
                     <button class="btn btn-outline-success" type="submit" id="add-length-btn">Add</button>
                 </div>
             </form>
             <div class="table-responsive">
-                <table id="filters-table" class="table table-sm table-hover bg-transparent">
+                <table id="lengths-table" class="table table-sm table-hover bg-transparent">
                     <caption>Saved Lengths</caption>
                     <thead><tr>
                         <th scope="col" class="text-center">

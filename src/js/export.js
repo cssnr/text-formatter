@@ -42,7 +42,7 @@ export async function saveOptions(event) {
     let value
     if (event.target.type === 'checkbox') {
         value = event.target.checked
-    } else if (event.target.type === 'text') {
+    } else if (['text', 'number'].includes(event.target.type)) {
         value = event.target.value
     }
     if (value !== undefined) {
