@@ -37,7 +37,7 @@ async function initPage(event) {
     lengthRange.max = options.textSliderMax
 
     const urlParams = new URLSearchParams(window.location.search)
-    const text = urlParams.get('text')
+    const text = urlParams.get('text') || textInput.value
     if (text) {
         // console.log('urlParams text:', text)
         textInput.value = text
