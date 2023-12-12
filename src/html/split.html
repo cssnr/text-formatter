@@ -4,6 +4,7 @@
     <title>Text Formatter</title>
     <link rel="icon" href="../images/logo16.png" sizes="any">
     <link rel="stylesheet" type="text/css" href="../dist/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/split.css">
     <script type="text/javascript" src="../js/theme.js"></script>
 </head>
 <body>
@@ -12,11 +13,14 @@
     <h1>Split Text</h1>
     <div class="mb-2">
         <label for="textInput" class="form-label visually-hidden">Input</label>
-        <textarea id="textInput" class="form-control" rows="2" placeholder="Input Text"></textarea>
+        <textarea id="textInput" class="form-control" rows="4" placeholder="Input Text"></textarea>
     </div>
     <div class="mb-2">
         <label for="textOutput" class="form-label visually-hidden">Output</label>
-        <textarea id="textOutput" class="form-control" rows="5" placeholder="Output Text" readonly></textarea>
+        <textarea id="textOutput" class="form-control" rows="6" placeholder="Output Text" readonly></textarea>
+        <span id="outputSpan" class="float-end label label-default">
+            <span id="charsCount">0</span> Chars / <span id="linesCount">0</span> Lines
+        </span>
     </div>
     <div class="d-flex align-items-center mb-2">
         <button id="paste" class="btn btn-outline-info me-2">Paste</button>

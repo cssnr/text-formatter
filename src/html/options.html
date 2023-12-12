@@ -10,7 +10,7 @@
 
 <div class="container-fluid p-3">
 <div class="row">
-<div class="col-xl-6 col-md-8 col-12 m-auto">
+<div class="col-xl-8 col-md-10 col-12 m-auto">
 <div class="card">
 <div class="card-body">
     <div class="d-flex justify-content-center align-items-center">
@@ -38,24 +38,28 @@
             <label class="form-check-label" for="showUpdate" aria-describedby="showUpdateHelp">Show Release Notes on Update</label>
         </div>
         <hr>
-        <div class="mb-2">
-            <label for="textSplitLength" class="form-label">Default Text Split Length</label>
-            <input id="textSplitLength" aria-describedby="textSplitLengthHelp" type="text" class="form-control" autocomplete="off">
-            <div class="form-text" id="textSplitLengthHelp">Length Used From Context Menu and Saved on Text Page.</div>
-        </div>
-        <div class="mb-2">
-            <label for="textSliderMin" class="form-label">Text Slider Minimum Range</label>
-            <input id="textSliderMin" aria-describedby="textSplitLengthHelp" type="text" class="form-control" autocomplete="off">
-            <div class="form-text" id="textSliderMinHelp">Minimum Slider Range on the Text Page.</div>
-        </div>
-        <div class="mb-2">
-            <label for="textSliderMax" class="form-label">Text Slider Minimum Range</label>
-            <input id="textSliderMax" aria-describedby="textSliderMaxHelp" type="text" class="form-control" autocomplete="off">
-            <div class="form-text" id="textSliderMaxHelp">Maximum Slider Range on the Text Page.</div>
+        <h3 id="split-text">Split Text Page</h3>
+        <div class="row">
+            <div class="col-sm-4 col-12">
+                <label for="textSplitLength" class="form-label">Default Split Length</label>
+                <input id="textSplitLength" aria-describedby="textSplitLengthHelp" type="number" class="form-control" autocomplete="off">
+                <div class="form-text" id="textSplitLengthHelp">Default Text Split Length.</div>
+            </div>
+            <div class="col-sm-4 col-12">
+                <label for="textSliderMin" class="form-label">Slider Min</label>
+                <input id="textSliderMin" aria-describedby="textSplitLengthHelp" type="number" class="form-control" autocomplete="off">
+                <div class="form-text" id="textSliderMinHelp">Minimum Slider Range.</div>
+            </div>
+            <div class="col-sm-4 col-12">
+                <label for="textSliderMax" class="form-label">Slider Max</label>
+                <input id="textSliderMax" aria-describedby="textSliderMaxHelp" type="number" class="form-control" autocomplete="off">
+                <div class="form-text" id="textSliderMaxHelp">Maximum Slider Range.</div>
+            </div>
         </div>
     </form>
 
-    <div class="text-center mt-3">
+    <hr>
+    <div class="text-center">
         <a class="link-body-emphasis text-decoration-none d-inline-block" target="_blank" rel="noopener"
            href="https://github.com/cssnr/text-formatter#readme">Get Help</a>
         |

@@ -85,8 +85,13 @@ async function processForm(event) {
     lengthInput.value = length
     const text = textInput.value
     // console.log('text:', text)
-    textOutput.value = processText(text, length)
+    const result = processText(text, length)
+    textOutput.value = result
     // await writeText(result)
+    document.getElementById('charsCount').textContent = result.length.toString()
+    document.getElementById('linesCount').textContent = result
+        .split(/\r\n?|\n/g)
+        .length.toString()
 }
 
 async function copyBtn() {
