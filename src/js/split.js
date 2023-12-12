@@ -39,7 +39,7 @@ async function initPage(event) {
     const urlParams = new URLSearchParams(window.location.search)
     const text = urlParams.get('text')
     if (text) {
-        console.log('urlParams text:', text)
+        // console.log('urlParams text:', text)
         textInput.value = text
         await processForm(event)
     }
@@ -76,7 +76,7 @@ async function pasteBtn(event) {
 }
 
 async function processForm(event) {
-    // console.log('processForm', event)
+    // console.log('processForm:', event)
     let length
     if (event.target?.dataset?.pattern) {
         // console.log('FROM: event.target.dataset.pattern')
@@ -120,10 +120,8 @@ async function clearBtn(event) {
 
 function toggleReadOnly(event) {
     if (event.target.checked) {
-        console.log('readonly = true')
         textOutput.setAttribute('readonly', 'readonly')
     } else {
-        console.log('removeAttribute readonly')
         textOutput.removeAttribute('readonly')
     }
 }
@@ -134,44 +132,50 @@ function toggleReadOnly(event) {
  * @param {SubmitEvent} event
  */
 async function addLength(event) {
-    // console.log('addFilter:', event)
+    // console.log('addLength:', event)
     event.preventDefault()
     const element = document.querySelector('#length-form input')
-    const filter = element.value
-    if (filter) {
-        console.log(`filter: ${filter}`)
+    const length = element.value.replace(/^0+/, '')
+    console.log('length:', length)
+    if (parseInt(length) && parseInt(length) > 0) {
         const { options } = await chrome.storage.sync.get(['options'])
-        if (!options.textLengths.includes(filter)) {
-            options.textLengths.push(filter)
-            options.textLengths.sort()
+        if (!options.textLengths.includes(length)) {
+            options.textLengths.push(length)
+            options.textLengths.sort(function (a, b) {
+                return a - b
+            })
             console.log('options.textLengths:', options.textLengths)
             await chrome.storage.sync.set({ options })
             updateTable(options.textLengths)
             updateLengthsDropdown(options.textLengths)
-            showToast(`Added Length: ${filter}`, 'success')
+            showToast(`Added Length: ${length}`, 'success')
+        } else {
+            showToast(`Length Exists: ${length}`, 'warning')
         }
+    } else {
+        showToast(`Invalid Length: ${length}`, 'warning')
     }
     element.value = ''
     element.focus()
 }
 
 function updateLengthsDropdown(lengths) {
+    document.getElementById('lengths-ul').innerHTML = ''
     if (lengths?.length) {
-        document.getElementById('filters-ul').innerHTML = ''
         lengths.forEach(function (value, i) {
-            createFilterLink(i.toString(), value)
+            createLink(i.toString(), value)
         })
     }
 }
 
 /**
- * Add Form Input for a Filter
- * @function createFilterLink
+ * Create Link Element
+ * @function createLink
  * @param {String} number
  * @param {String} value
  */
-function createFilterLink(number, value = '') {
-    const ul = document.getElementById('filters-ul')
+function createLink(number, value = '') {
+    const ul = document.getElementById('lengths-ul')
     const li = document.createElement('li')
     ul.appendChild(li)
     const a = document.createElement('a')
@@ -184,68 +188,68 @@ function createFilterLink(number, value = '') {
 }
 
 /**
- * Update Filters Table with Data
+ * Update Lengths Table with Data
  * @function updateTable
  * @param {Object} data
  */
 function updateTable(data) {
-    const tbody = document.querySelector('#filters-table tbody')
+    const tbody = document.querySelector('#lengths-table tbody')
     tbody.innerHTML = ''
 
     data.forEach(function (value) {
         const row = tbody.insertRow()
 
-        const deleteBtn = document.createElement('a')
+        const button = document.createElement('a')
         const svg = document.querySelector('.bi-trash3').cloneNode(true)
-        deleteBtn.appendChild(svg)
-        deleteBtn.title = 'Delete'
-        deleteBtn.dataset.value = value
-        deleteBtn.classList.add('link-danger')
-        deleteBtn.setAttribute('role', 'button')
-        deleteBtn.addEventListener('click', deleteHost)
+        button.appendChild(svg)
+        button.title = 'Delete'
+        button.dataset.value = value
+        button.classList.add('link-danger')
+        button.setAttribute('role', 'button')
+        button.addEventListener('click', deleteLength)
         const cell1 = row.insertCell()
         cell1.classList.add('text-center')
-        cell1.appendChild(deleteBtn)
+        cell1.appendChild(button)
 
-        const filterLink = document.createElement('a')
-        filterLink.dataset.clipboardText = value
-        filterLink.text = value
-        filterLink.title = value
-        filterLink.classList.add(
+        const link = document.createElement('a')
+        link.dataset.clipboardText = value
+        link.text = value
+        link.title = value
+        link.classList.add(
             'clip',
             'link-body-emphasis',
             'link-underline',
             'link-underline-opacity-0'
         )
-        filterLink.setAttribute('role', 'button')
+        link.setAttribute('role', 'button')
         const cell2 = row.insertCell()
-        cell2.appendChild(filterLink)
+        cell2.appendChild(link)
     })
 }
 
 /**
- * Delete Host
- * @function deleteHost
+ * Delete Length
+ * @function deleteLength
  * @param {MouseEvent} event
  */
-async function deleteHost(event) {
-    // console.log('deleteHost:', event)
+async function deleteLength(event) {
+    // console.log('deleteLength:', event)
     event.preventDefault()
     const anchor = event.target.closest('a')
-    const filter = anchor?.dataset?.value
-    console.log(`filter: ${filter}`)
+    const length = anchor?.dataset?.value
+    console.log('length:', length)
     const { options } = await chrome.storage.sync.get(['options'])
     // console.log('options.textLengths:', options.textLengths)
-    if (filter && options.textLengths.includes(filter)) {
-        const index = options.textLengths.indexOf(filter)
-        console.log(`index: ${index}`)
+    if (length && options.textLengths.includes(length)) {
+        const index = options.textLengths.indexOf(length)
+        console.log('index:', index)
         if (index !== undefined) {
             options.textLengths.splice(index, 1)
             await chrome.storage.sync.set({ options })
             console.log('options.textLengths:', options.textLengths)
             updateTable(options.textLengths)
             document.getElementById('add-length').focus()
-            showToast(`Removed Length: ${filter}`, 'warning')
+            showToast(`Removed Length: ${length}`, 'warning')
         }
     }
     updateLengthsDropdown(options.textLengths)
