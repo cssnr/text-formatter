@@ -19,6 +19,7 @@ document.getElementById('paste').addEventListener('click', pasteBtn)
 document.getElementById('process').addEventListener('click', processForm)
 document.getElementById('copy').addEventListener('click', copyBtn)
 document.getElementById('clear').addEventListener('click', clearBtn)
+document.getElementById('readOnly').addEventListener('change', toggleReadOnly)
 document.getElementById('length-form').addEventListener('submit', addLength)
 
 /**
@@ -103,6 +104,16 @@ async function clearBtn() {
     console.log('clearBtn')
     textInput.value = ''
     textOutput.value = ''
+}
+
+function toggleReadOnly(event) {
+    if (event.target.checked) {
+        console.log('readonly = true')
+        textOutput.setAttribute('readonly', 'readonly')
+    } else {
+        console.log('removeAttribute readonly')
+        textOutput.removeAttribute('readonly')
+    }
 }
 
 /**

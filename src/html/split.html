@@ -17,10 +17,14 @@
     </div>
     <div class="mb-2">
         <label for="textOutput" class="form-label visually-hidden">Output</label>
-        <textarea id="textOutput" class="form-control" rows="6" placeholder="Output Text" readonly></textarea>
+        <textarea id="textOutput" class="form-control" rows="6" placeholder="Output Text" readonly="readonly"></textarea>
         <span id="outputSpan" class="float-end label label-default">
             <span id="charsCount">0</span> Chars / <span id="linesCount">1</span> Lines
         </span>
+        <div class="float-end label label-default">
+            <label class="form-check-label" for="readOnly">readonly</label>
+            <input class="form-check-input" type="checkbox" id="readOnly" checked>
+        </div>
     </div>
     <button id="paste" class="btn btn-outline-info  mb-2 me-2">Paste</button>
     <div class="btn-group  mb-2 me-2" role="group" aria-label="Button group with nested dropdown">
