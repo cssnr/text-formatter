@@ -107,10 +107,10 @@ async function copyBtn() {
     await writeText(textOutput.value)
 }
 
-async function clearBtn() {
+async function clearBtn(event) {
     console.log('clearBtn')
     textInput.value = ''
-    textOutput.value = ''
+    await processForm(event)
 }
 
 function toggleReadOnly(event) {
