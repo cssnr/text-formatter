@@ -97,8 +97,13 @@ async function processForm(event) {
     textOutput.value = result
     // await writeText(result)
     document.getElementById('charsCount').textContent = result.length.toString()
+    document.getElementById('wordsCount').textContent = result
+        .split(/\s+/)
+        .filter((i) => i)
+        .length.toString()
     document.getElementById('linesCount').textContent = result
         .split(/\r\n?|\n/g)
+        .filter((i) => i)
         .length.toString()
 }
 
