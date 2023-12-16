@@ -33,6 +33,10 @@
         {
           "version": "0.1.8",
           "update_link": "https://github.com/cssnr/text-formatter/releases/download/0.1.8/text_formatter-firefox.xpi"
+        },
+        {
+          "version": "0.1.9",
+          "update_link": "https://github.com/cssnr/text-formatter/releases/download/0.1.9/text_formatter-firefox.xpi"
         }
       ]
     }
