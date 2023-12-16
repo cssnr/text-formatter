@@ -56,13 +56,36 @@ async function contextMenusClicked(ctx, tab) {
     if (ctx.menuItemId === 'options') {
         chrome.runtime.openOptionsPage()
     } else if (ctx.menuItemId === 'open_text') {
-        console.log('ctx.selectionText:', ctx.selectionText)
+        console.log('open_text: ctx.selectionText:', ctx.selectionText)
         const text = ctx.selectionText
         const url = new URL(chrome.runtime.getURL('/html/split.html'))
         url.searchParams.set('text', text)
         await chrome.tabs.create({ active: true, url: url.toString() })
+    } else if (ctx.menuItemId === 'open_paragraphs') {
+        console.log('open_paragraphs: ctx.selectionText:', ctx.selectionText)
+        const [tab] = await chrome.tabs.query({
+            currentWindow: true,
+            active: true,
+        })
+        const results = await chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            func: extractSelection,
+        })
+        if (!results.length || !results[0].result) {
+            return console.log('No Selection Text.')
+        }
+        console.log('results.result', results[0].result)
+        for (let text of results[0].result.split('\n')) {
+            text = text.replace(/[\r\n]+/g, '')
+            if (text.length && !text.startsWith('"')) {
+                console.log(`text: "${text}"`)
+                const url = new URL(chrome.runtime.getURL('/html/split.html'))
+                url.searchParams.set('text', text)
+                await chrome.tabs.create({ active: false, url: url.toString() })
+            }
+        }
     } else if (ctx.menuItemId === 'split_text') {
-        console.log('ctx.selectionText:', ctx.selectionText)
+        console.log('split_text: ctx.selectionText:', ctx.selectionText)
         let { options } = await chrome.storage.sync.get(['options'])
         const text = processText(ctx.selectionText, options.textSplitLength)
         console.log('text:', text)
@@ -114,6 +137,18 @@ function onChanged(changes, namespace) {
 }
 
 /**
+ * A Function
+ * @function extractSelection
+ * @return {String}
+ */
+function extractSelection() {
+    console.log('extractSelection')
+    const selection = window.getSelection()
+    console.log('selection:', selection)
+    return selection.toString()
+}
+
+/**
  * Create Context Menus
  * @function createContextMenus
  */
@@ -123,6 +158,7 @@ function createContextMenus() {
     const ctx = ['all']
     const contexts = [
         [['selection'], 'open_text', 'normal', 'Open Text in Page'],
+        [['selection'], 'open_paragraphs', 'normal', 'Open Paragraphs in Page'],
         [['selection'], 'split_text', 'normal', 'Split Text and Copy'],
         [['selection'], 'separator-2', 'separator', 'separator'],
         [ctx, 'open_page', 'normal', 'Text Split Page'],
