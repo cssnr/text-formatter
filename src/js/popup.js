@@ -20,10 +20,9 @@ document
  */
 async function initPopup() {
     console.log('initPopup')
-    document.getElementById('version').textContent =
-        chrome.runtime.getManifest().version
-    document.getElementById('homepage_url').href =
-        chrome.runtime.getManifest().homepage_url
+    const manifest = chrome.runtime.getManifest()
+    document.getElementById('version').textContent = manifest.version
+    document.getElementById('homepage_url').href = manifest.homepage_url
 
     const { options } = await chrome.storage.sync.get(['options'])
     console.log('options:', options)
