@@ -28,7 +28,7 @@ document.getElementById('length-form').addEventListener('submit', addLength)
  * @function initPage
  */
 async function initPage(event) {
-    console.log('initPage')
+    console.log('initPage:', event)
     const { options } = await chrome.storage.sync.get(['options'])
     console.log('options:', options)
 
@@ -64,7 +64,7 @@ async function saveLength(event) {
 }
 
 async function pasteBtn(event) {
-    console.log('pasteBtn')
+    console.log('pasteBtn:', event)
     try {
         const clipboardContents = await navigator.clipboard.readText()
         console.log('clipboardContents:', clipboardContents)
@@ -108,23 +108,24 @@ async function processForm(event) {
         .length.toString()
 }
 
-async function copyBtn() {
-    console.log('copyBtn')
+async function copyBtn(event) {
+    console.log('copyBtn:', event)
     await writeText(textOutput.value)
 }
 
 async function clearBtn(event) {
-    console.log('clearBtn')
+    console.log('clearBtn:', event)
     textInput.value = ''
     await processForm(event)
 }
 
 async function closeBtn(event) {
-    console.log('closeBtn')
+    console.log('closeBtn:', event)
     window.close()
 }
 
 function toggleReadOnly(event) {
+    console.log('toggleReadOnly:', event)
     if (event.target.checked) {
         textOutput.setAttribute('readonly', 'readonly')
     } else {
@@ -138,7 +139,7 @@ function toggleReadOnly(event) {
  * @param {SubmitEvent} event
  */
 async function addLength(event) {
-    // console.log('addLength:', event)
+    console.log('addLength:', event)
     event.preventDefault()
     const element = document.querySelector('#length-form input')
     const length = element.value.replace(/^0+/, '')
@@ -206,7 +207,7 @@ function updateTable(data) {
         const row = tbody.insertRow()
 
         const button = document.createElement('a')
-        const svg = document.querySelector('.bi-trash3').cloneNode(true)
+        const svg = document.getElementById('bi-trash3').cloneNode(true)
         button.appendChild(svg)
         button.title = 'Delete'
         button.dataset.value = value
@@ -239,7 +240,7 @@ function updateTable(data) {
  * @param {MouseEvent} event
  */
 async function deleteLength(event) {
-    // console.log('deleteLength:', event)
+    console.log('deleteLength:', event)
     event.preventDefault()
     const anchor = event.target.closest('a')
     const length = anchor?.dataset?.value

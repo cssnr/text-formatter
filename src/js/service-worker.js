@@ -3,7 +3,7 @@
 import { processText } from './export.js'
 
 chrome.runtime.onInstalled.addListener(onInstalled)
-chrome.contextMenus.onClicked.addListener(contextMenusClicked)
+chrome.contextMenus.onClicked.addListener(onClicked)
 chrome.commands.onCommand.addListener(onCommand)
 chrome.storage.onChanged.addListener(onChanged)
 
@@ -47,12 +47,12 @@ async function onInstalled(details) {
 
 /**
  * On Clicked Callback
- * @function contextMenusClicked
+ * @function onClicked
  * @param {OnClickData} ctx
  * @param {chrome.tabs.Tab} tab
  */
-async function contextMenusClicked(ctx, tab) {
-    console.log('contextMenusClicked:', ctx, tab)
+async function onClicked(ctx, tab) {
+    console.log('onClicked:', ctx, tab)
     if (ctx.menuItemId === 'options') {
         chrome.runtime.openOptionsPage()
     } else if (ctx.menuItemId === 'open_text') {
