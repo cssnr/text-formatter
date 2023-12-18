@@ -208,6 +208,7 @@ function updateTable(data) {
 
         const button = document.createElement('a')
         const svg = document.getElementById('bi-trash3').cloneNode(true)
+        svg.removeAttribute('id')
         button.appendChild(svg)
         button.title = 'Delete'
         button.dataset.value = value
