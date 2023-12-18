@@ -16,7 +16,7 @@ lengthInput.addEventListener('change', saveLength)
 lengthInput.addEventListener('input', processForm)
 
 document.getElementById('paste').addEventListener('click', pasteBtn)
-document.getElementById('process').addEventListener('click', processForm)
+// document.getElementById('process').addEventListener('click', processForm)
 document.getElementById('copy').addEventListener('click', copyBtn)
 document.getElementById('clear').addEventListener('click', clearBtn)
 document.getElementById('close').addEventListener('click', closeBtn)
