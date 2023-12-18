@@ -16,7 +16,7 @@ lengthInput.addEventListener('change', saveLength)
 lengthInput.addEventListener('input', processForm)
 
 document.getElementById('paste').addEventListener('click', pasteBtn)
-document.getElementById('process').addEventListener('click', processForm)
+// document.getElementById('process').addEventListener('click', processForm)
 document.getElementById('copy').addEventListener('click', copyBtn)
 document.getElementById('clear').addEventListener('click', clearBtn)
 document.getElementById('close').addEventListener('click', closeBtn)
@@ -208,6 +208,7 @@ function updateTable(data) {
 
         const button = document.createElement('a')
         const svg = document.getElementById('bi-trash3').cloneNode(true)
+        svg.removeAttribute('id')
         button.appendChild(svg)
         button.title = 'Delete'
         button.dataset.value = value
