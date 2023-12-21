@@ -49,17 +49,14 @@ async function initPage(event) {
     updateLengthsDropdown(options.textLengths)
     updateTable(options.textLengths)
 
+    // Get local settings and update accordingly
     const { settings } = await chrome.storage.local.get(['settings'])
     console.log('settings:', settings)
-    if (settings?.textInput) {
-        resizeTextArea('textInput', settings.textInput)
-    }
-    if (settings?.textOutput) {
-        resizeTextArea('textOutput', settings.textOutput)
+    for (const key in settings) {
+        resizeTextArea(key, settings[key])
     }
 
     // Listen for changes on output textbox
-    // await updateSize()
     const processChange = debounce((e) => updateSize(e))
     new ResizeObserver(processChange).observe(textOutput)
     new ResizeObserver(processChange).observe(textInput)
@@ -317,29 +314,57 @@ function onChanged(changes, namespace) {
     // console.log('onChanged:', changes, namespace)
     for (const [key, { oldValue, newValue }] of Object.entries(changes)) {
         if (namespace === 'local' && key === 'settings') {
-            console.log('oldValue:', oldValue)
-            console.log('newValue:', newValue)
+            // console.log('oldValue:', oldValue)
+            // console.log('newValue:', newValue)
             const id = changedKey(oldValue, newValue)
             if (id) {
-                console.log('id:', id)
+                // console.log('id:', id)
                 resizeTextArea(id, newValue[id])
             }
         }
     }
 }
 
-async function updateSize(event) {
-    console.log('updateSize:', event)
-    console.log('event[0].target.id:', event[0].target.id)
-    const element = document.getElementById(event[0].target.id)
-    console.log('offsetHeight:', element.offsetHeight)
+/**
+ * Get Changed Key from Objects
+ * @function changedKey
+ * @param {Object} oldValue
+ * @param {Object} newValue
+ */
+function changedKey(oldValue, newValue) {
+    if (oldValue && newValue) {
+        for (const key in newValue) {
+            if (oldValue[key] !== newValue[key]) {
+                return key
+            }
+        }
+    }
+    return null
+}
+
+/**
+ * Update Size Mutation Observer
+ * @function updateSize
+ * @param {ResizeObserverEntry} entries
+ */
+async function updateSize(entries) {
+    // console.log('updateSize:', entries)
+    // console.log('entries[0].target.id:', entries[0].target.id)
+    const element = document.getElementById(entries[0].target.id)
+    // console.log('offsetHeight:', element.offsetHeight)
     let { settings } = await chrome.storage.local.get(['settings'])
     settings = settings || {}
-    settings[event[0].target.id] = element.offsetHeight
+    settings[entries[0].target.id] = element.offsetHeight
     // console.log('settings:', settings)
     await chrome.storage.local.set({ settings })
 }
 
+/**
+ * Resize textarea id to size
+ * @function resizeTextArea
+ * @param {String} id
+ * @param {Number} size
+ */
 function resizeTextArea(id, size) {
     console.log(`resizeTextArea: ${id}: ${size}`)
     const element = document.getElementById(id)
@@ -362,19 +387,4 @@ function debounce(func, timeout = 300) {
             func.apply(this, args)
         }, timeout)
     }
-}
-
-/**
- * Get Changed Key from Objects
- * @function changedKey
- * @param {Object} oldValue
- * @param {Object} newValue
- */
-function changedKey(oldValue, newValue) {
-    for (const key in newValue) {
-        if (oldValue[key] !== newValue[key]) {
-            return key
-        }
-    }
-    return null
 }
