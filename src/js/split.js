@@ -315,12 +315,15 @@ function showToast(message, bsClass = 'success') {
  */
 function onChanged(changes, namespace) {
     // console.log('onChanged:', changes, namespace)
-    for (const [key, { newValue }] of Object.entries(changes)) {
+    for (const [key, { oldValue, newValue }] of Object.entries(changes)) {
         if (namespace === 'local' && key === 'settings') {
+            console.log('oldValue:', oldValue)
             console.log('newValue:', newValue)
-            const id = Object.keys(newValue)[0]
-            console.log('id:', id)
-            resizeTextArea(id, newValue[id])
+            const id = changedKey(oldValue, newValue)
+            if (id) {
+                console.log('id:', id)
+                resizeTextArea(id, newValue[id])
+            }
         }
     }
 }
@@ -328,11 +331,12 @@ function onChanged(changes, namespace) {
 async function updateSize(event) {
     console.log('updateSize:', event)
     console.log('event[0].target.id:', event[0].target.id)
-    console.log('offsetHeight:', textOutput.offsetHeight)
+    const element = document.getElementById(event[0].target.id)
+    console.log('offsetHeight:', element.offsetHeight)
     let { settings } = await chrome.storage.local.get(['settings'])
     settings = settings || {}
-    settings[event[0].target.id] = textOutput.offsetHeight
-    console.log('settings:', settings)
+    settings[event[0].target.id] = element.offsetHeight
+    // console.log('settings:', settings)
     await chrome.storage.local.set({ settings })
 }
 
@@ -358,4 +362,19 @@ function debounce(func, timeout = 300) {
             func.apply(this, args)
         }, timeout)
     }
+}
+
+/**
+ * Get Changed Key from Objects
+ * @function changedKey
+ * @param {Object} oldValue
+ * @param {Object} newValue
+ */
+function changedKey(oldValue, newValue) {
+    for (const key in newValue) {
+        if (oldValue[key] !== newValue[key]) {
+            return key
+        }
+    }
+    return null
 }
