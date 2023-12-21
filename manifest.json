@@ -3,7 +3,7 @@
   "description": "Text Splitting and Formatting Web Extension and Browser Addon.",
   "homepage_url": "https://github.com/cssnr/text-formatter",
   "author": "Shane",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "manifest_version": 3,
   "commands": {
     "_execute_action": {
