@@ -4,6 +4,8 @@ import { processText } from './export.js'
 
 document.addEventListener('DOMContentLoaded', initPage)
 
+chrome.storage.onChanged.addListener(onChanged)
+
 const textInput = document.getElementById('textInput')
 const textOutput = document.getElementById('textOutput')
 const lengthRange = document.getElementById('lengthSlider')
@@ -46,6 +48,21 @@ async function initPage(event) {
     }
     updateLengthsDropdown(options.textLengths)
     updateTable(options.textLengths)
+
+    const { settings } = await chrome.storage.local.get(['settings'])
+    console.log('settings:', settings)
+    if (settings?.textInput) {
+        resizeTextArea('textInput', settings.textInput)
+    }
+    if (settings?.textOutput) {
+        resizeTextArea('textOutput', settings.textOutput)
+    }
+
+    // Listen for changes on output textbox
+    // await updateSize()
+    const processChange = debounce((e) => updateSize(e))
+    new ResizeObserver(processChange).observe(textOutput)
+    new ResizeObserver(processChange).observe(textInput)
 }
 
 async function saveLength(event) {
@@ -288,4 +305,57 @@ function showToast(message, bsClass = 'success') {
     document.getElementById('toast-container').appendChild(element)
     const toast = new bootstrap.Toast(element)
     toast.show()
+}
+
+/**
+ * On Changed Callback
+ * @function onChanged
+ * @param {Object} changes
+ * @param {String} namespace
+ */
+function onChanged(changes, namespace) {
+    // console.log('onChanged:', changes, namespace)
+    for (const [key, { newValue }] of Object.entries(changes)) {
+        if (namespace === 'local' && key === 'settings') {
+            console.log('newValue:', newValue)
+            const id = Object.keys(newValue)[0]
+            console.log('id:', id)
+            resizeTextArea(id, newValue[id])
+        }
+    }
+}
+
+async function updateSize(event) {
+    console.log('updateSize:', event)
+    console.log('event[0].target.id:', event[0].target.id)
+    console.log('offsetHeight:', textOutput.offsetHeight)
+    let { settings } = await chrome.storage.local.get(['settings'])
+    settings = settings || {}
+    settings[event[0].target.id] = textOutput.offsetHeight
+    console.log('settings:', settings)
+    await chrome.storage.local.set({ settings })
+}
+
+function resizeTextArea(id, size) {
+    console.log(`resizeTextArea: ${id}: ${size}`)
+    const element = document.getElementById(id)
+    if (element.style.height !== `${size}px`) {
+        element.style.height = size + 'px'
+    }
+}
+
+/**
+ * DeBounce Function
+ * @function debounce
+ * @param {Function} func
+ * @param {Number} timeout
+ */
+function debounce(func, timeout = 300) {
+    let timer
+    return (...args) => {
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+            func.apply(this, args)
+        }, timeout)
+    }
 }
