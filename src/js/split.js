@@ -4,6 +4,8 @@ import { processText } from './export.js'
 
 document.addEventListener('DOMContentLoaded', initPage)
 
+chrome.storage.onChanged.addListener(onChanged)
+
 const textInput = document.getElementById('textInput')
 const textOutput = document.getElementById('textOutput')
 const lengthRange = document.getElementById('lengthSlider')
@@ -46,6 +48,18 @@ async function initPage(event) {
     }
     updateLengthsDropdown(options.textLengths)
     updateTable(options.textLengths)
+
+    // Get local settings and update accordingly
+    const { settings } = await chrome.storage.local.get(['settings'])
+    console.log('settings:', settings)
+    for (const key in settings) {
+        resizeTextArea(key, settings[key])
+    }
+
+    // Listen for changes on output textbox
+    const processChange = debounce((e) => updateSize(e))
+    new ResizeObserver(processChange).observe(textOutput)
+    new ResizeObserver(processChange).observe(textInput)
 }
 
 async function saveLength(event) {
@@ -288,4 +302,89 @@ function showToast(message, bsClass = 'success') {
     document.getElementById('toast-container').appendChild(element)
     const toast = new bootstrap.Toast(element)
     toast.show()
+}
+
+/**
+ * On Changed Callback
+ * @function onChanged
+ * @param {Object} changes
+ * @param {String} namespace
+ */
+function onChanged(changes, namespace) {
+    // console.log('onChanged:', changes, namespace)
+    for (const [key, { oldValue, newValue }] of Object.entries(changes)) {
+        if (namespace === 'local' && key === 'settings') {
+            // console.log('oldValue:', oldValue)
+            // console.log('newValue:', newValue)
+            const id = changedKey(oldValue, newValue)
+            if (id) {
+                // console.log('id:', id)
+                resizeTextArea(id, newValue[id])
+            }
+        }
+    }
+}
+
+/**
+ * Get Changed Key from Objects
+ * @function changedKey
+ * @param {Object} oldValue
+ * @param {Object} newValue
+ */
+function changedKey(oldValue, newValue) {
+    if (oldValue && newValue) {
+        for (const key in newValue) {
+            if (oldValue[key] !== newValue[key]) {
+                return key
+            }
+        }
+    }
+    return null
+}
+
+/**
+ * Update Size Mutation Observer
+ * @function updateSize
+ * @param {ResizeObserverEntry} entries
+ */
+async function updateSize(entries) {
+    // console.log('updateSize:', entries)
+    // console.log('entries[0].target.id:', entries[0].target.id)
+    const element = document.getElementById(entries[0].target.id)
+    // console.log('offsetHeight:', element.offsetHeight)
+    let { settings } = await chrome.storage.local.get(['settings'])
+    settings = settings || {}
+    settings[entries[0].target.id] = element.offsetHeight
+    // console.log('settings:', settings)
+    await chrome.storage.local.set({ settings })
+}
+
+/**
+ * Resize textarea id to size
+ * @function resizeTextArea
+ * @param {String} id
+ * @param {Number} size
+ */
+function resizeTextArea(id, size) {
+    console.log(`resizeTextArea: ${id}: ${size}`)
+    const element = document.getElementById(id)
+    if (element.style.height !== `${size}px`) {
+        element.style.height = size + 'px'
+    }
+}
+
+/**
+ * DeBounce Function
+ * @function debounce
+ * @param {Function} func
+ * @param {Number} timeout
+ */
+function debounce(func, timeout = 300) {
+    let timer
+    return (...args) => {
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+            func.apply(this, args)
+        }, timeout)
+    }
 }
