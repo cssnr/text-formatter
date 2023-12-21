@@ -49,6 +49,10 @@
         {
           "version": "0.2.2",
           "update_link": "https://github.com/cssnr/text-formatter/releases/download/0.2.2/text_formatter-firefox.xpi"
+        },
+        {
+          "version": "0.2.3",
+          "update_link": "https://github.com/cssnr/text-formatter/releases/download/0.2.3/text_formatter-firefox.xpi"
         }
       ]
     }
