@@ -2,10 +2,9 @@
 
 import { saveOptions, updateOptions } from './export.js'
 
-document.addEventListener('DOMContentLoaded', initOptions)
-
 chrome.storage.onChanged.addListener(onChanged)
 
+document.addEventListener('DOMContentLoaded', initOptions)
 document
     .querySelectorAll('#options-form input')
     .forEach((el) => el.addEventListener('change', saveOptions))
@@ -21,9 +20,10 @@ document
  * @function initOptions
  */
 async function initOptions() {
-    console.log('initOptions')
-    document.getElementById('version').textContent =
-        chrome.runtime.getManifest().version
+    console.debug('initOptions')
+    const manifest = chrome.runtime.getManifest()
+    document.querySelector('#version').textContent = manifest.version
+    document.querySelector('[href="homepage_url"]').href = manifest.homepage_url
 
     await setShortcuts({
         mainKey: '_execute_action',
@@ -32,7 +32,7 @@ async function initOptions() {
     })
 
     const { options } = await chrome.storage.sync.get(['options'])
-    console.log('options:', options)
+    console.debug('options:', options)
     updateOptions(options)
 }
 
@@ -43,10 +43,10 @@ async function initOptions() {
  * @param {String} namespace
  */
 function onChanged(changes, namespace) {
-    // console.log('onChanged:', changes, namespace)
+    // console.debug('onChanged:', changes, namespace)
     for (const [key, { newValue }] of Object.entries(changes)) {
         if (namespace === 'sync' && key === 'options') {
-            console.log('newValue:', newValue)
+            console.debug('newValue:', newValue)
             updateOptions(newValue)
         }
     }
@@ -60,10 +60,10 @@ function onChanged(changes, namespace) {
 async function setShortcuts(mapping) {
     const commands = await chrome.commands.getAll()
     for (const [elementID, name] of Object.entries(mapping)) {
-        // console.log(`${elementID}: ${name}`)
+        // console.debug(`${elementID}: ${name}`)
         const command = commands.find((x) => x.name === name)
         if (command?.shortcut) {
-            console.log(`${elementID}: ${command.shortcut}`)
+            console.debug(`${elementID}: ${command.shortcut}`)
             const el = document.getElementById(elementID)
             if (el) {
                 el.textContent = command.shortcut

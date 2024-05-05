@@ -1,4 +1,4 @@
-name: 'Build'
+name: "Build"
 
 on:
   workflow_dispatch:
@@ -12,7 +12,7 @@ env:
 
 jobs:
   build:
-    name: 'Build'
+    name: "Build"
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
@@ -21,17 +21,17 @@ jobs:
       package_name: ${{ steps.manifest.outputs.package_name }}
 
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v3
 
-      - name: 'Parse Manifest'
+      - name: "Parse Manifest"
         id: manifest
         run: |-
           echo "version=$(jq '.version' < manifest.json | tr -d '"')" >> "$GITHUB_OUTPUT"
           export name="$(jq '.name' < manifest.json | tr -d '"' | tr '[:upper:]' '[:lower:]')"
           echo "package_name=${name// /_}" >> "$GITHUB_OUTPUT"
 
-      - name: 'Release Version Check'
+      - name: "Release Version Check"
         if: ${{ github.event_name == 'release' }}
         run: |-
           echo ${{ github.ref_name }}
@@ -41,23 +41,23 @@ jobs:
             exit 1
           fi
 
-      - name: 'Setup Node'
+      - name: "Setup Node"
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      - name: 'Build All'
+      - name: "Build All"
         run: |-
           npm install
           npm run build
 
-      - name: 'Upload to Actions'
+      - name: "Upload to Actions"
         uses: actions/upload-artifact@v3
         with:
           name: artifacts
           path: web-ext-artifacts/
 
-      - name: 'Upload to Release'
+      - name: "Upload to Release"
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -67,39 +67,39 @@ jobs:
           file_glob: true
 
   publish-mozilla:
-    name: 'Publish Mozilla'
+    name: "Publish Mozilla"
     runs-on: ubuntu-latest
     timeout-minutes: 30
     needs: [build]
     if: ${{ github.event_name == 'release' }}
 
     steps:
-      - name: 'Download Artifacts'
+      - name: "Download Artifacts"
         uses: actions/download-artifact@v3
         with:
           name: artifacts
 
-      - name: 'Sign Mozilla Addon'
+      - name: "Sign Mozilla Addon"
         run: |-
           unzip *firefox* -d src
           npx web-ext sign --api-key="${{ secrets.FIREFOX_API_KEY }}" \
             --api-secret="${{ secrets.FIREFOX_API_SECRET }}" \
             --source-dir "src"
 
-      - name: 'Rename Signed Artifact'
+      - name: "Rename Signed Artifact"
         working-directory: web-ext-artifacts
         run: |-
           ls -l .
           mv *.xpi "${{ needs.build.outputs.package_name }}-firefox.xpi"
           ls -l .
 
-      - name: 'Upload to Actions'
+      - name: "Upload to Actions"
         uses: actions/upload-artifact@v3
         with:
           name: signed
           path: web-ext-artifacts/
 
-      - name: 'Upload to Release'
+      - name: "Upload to Release"
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -109,29 +109,29 @@ jobs:
           file_glob: true
 
   update-mozilla:
-    name: 'Update Mozilla'
+    name: "Update Mozilla"
     runs-on: ubuntu-latest
     timeout-minutes: 5
     needs: [publish-mozilla]
     if: ${{ github.event_name == 'release' }}
 
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v3
 
-      - name: 'Mozilla Addon Update'
+      - name: "Mozilla Addon Update"
         uses: cssnr/mozilla-addon-update-action@master
         with:
-          url: 'https://github.com/cssnr/text-formatter/releases/download/{version}/text_formatter-firefox.xpi'
+          url: "https://github.com/cssnr/text-formatter/releases/download/{version}/text_formatter-firefox.xpi"
           addon_id: ${{ env.MOZILLA_ID }}
 
-      - name: 'Commit files'
+      - name: "Commit files"
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git commit -a -m "Update update.json"
 
-      - name: 'Push changes'
+      - name: "Push changes"
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

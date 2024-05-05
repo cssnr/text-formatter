@@ -1,6 +1,6 @@
 // JS for popup.html
 
-import { saveOptions, updateOptions } from './export.js'
+import { saveOptions, showToast, updateOptions } from './export.js'
 
 document.addEventListener('DOMContentLoaded', initPopup)
 
@@ -19,14 +19,18 @@ document
  * @function initPopup
  */
 async function initPopup() {
-    console.log('initPopup')
+    console.debug('initPopup')
     const manifest = chrome.runtime.getManifest()
-    document.getElementById('version').textContent = manifest.version
-    document.getElementById('homepage_url').href = manifest.homepage_url
+    document.querySelector('#version').textContent = manifest.version
+    document.querySelector('[href="homepage_url"]').href = manifest.homepage_url
 
     const { options } = await chrome.storage.sync.get(['options'])
-    console.log('options:', options)
+    console.debug('options:', options)
     updateOptions(options)
+
+    if (chrome.runtime.lastError) {
+        showToast(chrome.runtime.lastError.message, 'warning')
+    }
 }
 
 /**
@@ -36,14 +40,23 @@ async function initPopup() {
  * @param {MouseEvent} event
  */
 async function popupLinks(event) {
-    console.log('popupLinks:', event)
+    console.debug('popupLinks:', event)
     event.preventDefault()
     const anchor = event.target.closest('a')
-    console.log(`anchor.href: ${anchor.href}`)
+    // console.debug(`anchor.href: ${anchor.href}`, anchor)
+    let url
     if (anchor.href.endsWith('html/options.html')) {
         chrome.runtime.openOptionsPage()
+        return window.close()
+    } else if (
+        anchor.href.startsWith('http') ||
+        anchor.href.startsWith('chrome-extension')
+    ) {
+        url = anchor.href
     } else {
-        await chrome.tabs.create({ active: true, url: anchor.href })
+        url = chrome.runtime.getURL(anchor.href)
     }
+    console.debug('url:', url)
+    await chrome.tabs.create({ active: true, url })
     return window.close()
 }
