@@ -1,6 +1,6 @@
 // JS for split.html
 
-import { processText } from './export.js'
+import { processText, showToast } from './export.js'
 
 document.addEventListener('DOMContentLoaded', initPage)
 
@@ -286,22 +286,6 @@ async function writeText(text) {
         console.log(error)
         showToast('Clipboard Write Failed!', 'danger')
     }
-}
-
-/**
- * Show Bootstrap Toast
- * @function showToast
- * @param {String} message
- * @param {String} bsClass
- */
-function showToast(message, bsClass = 'success') {
-    const element = document.getElementById('toast').cloneNode(true)
-    element.classList.add(`text-bg-${bsClass}`)
-    element.querySelector('.toast-body').innerText = message
-    element.removeAttribute('id')
-    document.getElementById('toast-container').appendChild(element)
-    const toast = new bootstrap.Toast(element)
-    toast.show()
 }
 
 /**
