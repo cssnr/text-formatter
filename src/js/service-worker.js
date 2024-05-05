@@ -78,8 +78,8 @@ async function onClicked(ctx, tab) {
         const url = new URL(chrome.runtime.getURL('/html/split.html'))
         url.searchParams.set('text', text)
         await chrome.tabs.create({ active: true, url: url.toString() })
-    } else if (ctx.menuItemId === 'open_paragraphs') {
-        console.log('open_paragraphs: ctx.selectionText:', ctx.selectionText)
+    } else if (ctx.menuItemId === 'paragraphs') {
+        console.log('paragraphs: ctx.selectionText:', ctx.selectionText)
         const [tab] = await chrome.tabs.query({
             currentWindow: true,
             active: true,
@@ -172,15 +172,14 @@ function extractSelection() {
 function createContextMenus() {
     console.log('createContextMenus')
     chrome.contextMenus.removeAll()
-    const ctx = ['all']
     const contexts = [
         [['selection'], 'open_text', 'normal', 'Open Text in Page'],
-        [['selection'], 'open_paragraphs', 'normal', 'Open Paragraphs in Page'],
+        [['selection'], 'paragraphs', 'normal', 'Open Paragraphs in Pages'],
         [['selection'], 'split_text', 'normal', 'Split Text and Copy'],
-        [['selection'], 'separator-2', 'separator', 'separator'],
-        [ctx, 'open_page', 'normal', 'Text Split Page'],
-        [ctx, 'separator-1', 'separator', 'separator'],
-        [ctx, 'options', 'normal', 'Open Options'],
+        [['selection'], 's-1', 'separator', 'separator'],
+        [['all'], 'open_page', 'normal', 'Text Split Page'],
+        [['all'], 's-2', 'separator', 'separator'],
+        [['all'], 'options', 'normal', 'Open Options'],
     ]
     contexts.forEach((context) => {
         chrome.contextMenus.create({
