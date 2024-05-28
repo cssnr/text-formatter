@@ -86,7 +86,7 @@ jobs:
         uses: jsdaniell/create-json@v1.2.3
         with:
           name: "amo-metadata.json"
-          json: '{"version": {"release_notes": "${{ env.NOTES }}"}}'
+          json: '{"version": {"release_notes": {"en-US": "${{ env.NOTES }}"}}}'
 
       - name: "Sign Mozilla Addon"
         run: |-
