@@ -59,7 +59,7 @@ export async function saveOptions(event) {
         console.log('number >= 0:', number >= 0)
         console.log('if', !isNaN(number) || number >= 0)
         let min = 1
-        let max = 300
+        let max = 999
         if (!isNaN(number) && number >= min && number <= max) {
             event.target.value = number.toString()
             options[event.target.id] = number
@@ -103,6 +103,20 @@ export function updateOptions(options) {
 }
 
 /**
+ * Update DOM with Manifest Details
+ * @function updateManifest
+ */
+export function updateManifest() {
+    const manifest = chrome.runtime.getManifest()
+    document
+        .querySelectorAll('.version')
+        .forEach((el) => (el.textContent = manifest.version))
+    document
+        .querySelectorAll('[href="homepage_url"]')
+        .forEach((el) => (el.href = manifest.homepage_url))
+}
+
+/**
  * Show Bootstrap Toast
  * @function showToast
  * @param {String} message
@@ -110,7 +124,7 @@ export function updateOptions(options) {
  */
 export function showToast(message, type = 'success') {
     console.debug(`showToast: ${type}: ${message}`)
-    const clone = document.querySelector('.d-none .toast')
+    const clone = document.querySelector('.d-none > .toast')
     const container = document.getElementById('toast-container')
     if (!clone || !container) {
         return console.warn('Missing clone or container:', clone, container)

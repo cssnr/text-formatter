@@ -9,6 +9,7 @@ env:
   SRC_DIR: src
   CHROME_ID: medimbembaeldnglneiipkenpagjfcdj
   MOZILLA_ID: web-tools-extension@cssnr.com
+  MOZILLA_CHANNEL: unlisted
 
 jobs:
   build:
@@ -22,7 +23,7 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: "Parse Manifest"
         id: manifest
@@ -42,9 +43,9 @@ jobs:
           fi
 
       - name: "Setup Node"
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
       - name: "Build All"
         run: |-
@@ -52,7 +53,7 @@ jobs:
           npm run build
 
       - name: "Upload to Actions"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: artifacts
           path: web-ext-artifacts/
@@ -75,7 +76,7 @@ jobs:
 
     steps:
       - name: "Download Artifacts"
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: artifacts
 
@@ -84,7 +85,8 @@ jobs:
           unzip *firefox* -d src
           npx web-ext sign --api-key="${{ secrets.FIREFOX_API_KEY }}" \
             --api-secret="${{ secrets.FIREFOX_API_SECRET }}" \
-            --source-dir "src"
+            --source-dir "${{ env.SRC_DIR }}" \
+            --channel "${{ env.MOZILLA_CHANNEL }}"
 
       - name: "Rename Signed Artifact"
         working-directory: web-ext-artifacts
@@ -94,7 +96,7 @@ jobs:
           ls -l .
 
       - name: "Upload to Actions"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: signed
           path: web-ext-artifacts/
@@ -117,7 +119,7 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: "Mozilla Addon Update"
         uses: cssnr/mozilla-addon-update-action@master

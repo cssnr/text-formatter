@@ -23,43 +23,23 @@
         <h1>Text Formatter</h1>
     </div>
     <div class="clearfix"></div>
-    <p class="text-center lead">v<span id="version"></span></p>
-    <table class="table table-sm table-borderless table-hover">
+    <p class="text-center lead">v<span class="version"></span></p>
+    <table id="keyboard-shortcuts" class="table table-sm table-borderless table-hover">
         <caption class="visually-hidden">Keyboard Shortcuts</caption>
         <thead class="visually-hidden"><tr><th>Description</th><th>Shortcut</th></tr></thead>
-        <tbody>
+        <tbody></tbody>
+        <tfoot class="d-none">
         <tr>
-            <td>Show Popup Action <i class="fa-regular fa-keyboard ms-1"></i></td>
-            <td class="text-end" title="Keyboard Shortcut"><kbd id="mainKey">Not Set</kbd></td>
+            <td class="bg-transparent"><i class="fa-regular fa-keyboard me-1"></i> <span class="description"></span></td>
+            <td class="bg-transparent text-end" title="Keyboard Shortcut"><kbd>Unknown</kbd></td>
         </tr>
-        <tr>
-            <td>Open Text Split Page <i class="fa-regular fa-keyboard ms-1"></i></td>
-            <td class="text-end" title="Keyboard Shortcut"><kbd id="openSplit">Not Set</kbd></td>
-        </tr>
-        </tbody>
+        </tfoot>
     </table>
+
     <hr>
+
     <form id="options-form" class="options">
-        <div class="form-check form-switch">
-            <input class="form-check-input options" type="checkbox" role="switch" id="contextMenu">
-            <label class="form-check-label" for="contextMenu" aria-describedby="contextMenuHelp">
-                Enable Right Click Menu
-                <span data-bs-toggle="tooltip" data-bs-title="Show Context Menu on Right Click.">
-                    <i class="fa-solid fa-circle-info ms-1"></i>
-                </span>
-            </label>
-        </div>
-        <div class="form-check form-switch">
-            <input class="form-check-input options" type="checkbox" role="switch" id="showUpdate">
-            <label class="form-check-label" for="showUpdate" aria-describedby="showUpdateHelp">
-                Show Release Notes on Update
-                <span data-bs-toggle="tooltip" data-bs-title="Show Release Notes on Version Update.">
-                    <i class="fa-solid fa-circle-info ms-1"></i>
-                </span>
-            </label>
-        </div>
-        <hr>
-        <h3 id="split-text"><a href="../html/split.html" class="text-decoration-none" target="_blank">
+        <h3 id="split-text"><a href="../html/split.html" class="link-body-emphasis text-decoration-none" target="_blank">
             <i class="fa-solid fa-align-justify me-2"></i> Split Text Page</a></h3>
         <div class="row">
             <div class="col-sm-4 col-12">
@@ -78,12 +58,32 @@
                 <div class="form-text" id="textSliderMaxHelp">Maximum Slider Range.</div>
             </div>
         </div>
+        <hr>
+        <div class="form-check form-switch">
+            <input class="form-check-input options" type="checkbox" role="switch" id="contextMenu">
+            <label class="form-check-label" for="contextMenu" aria-describedby="contextMenuHelp">
+                Enable Right Click Menu
+                <span data-bs-toggle="tooltip" data-bs-title="Show Context Menu on Right Click.">
+                    <i class="fa-solid fa-circle-info ms-1"></i>
+                </span>
+            </label>
+        </div>
+        <div class="form-check form-switch">
+            <input class="form-check-input options" type="checkbox" role="switch" id="showUpdate">
+            <label class="form-check-label" for="showUpdate" aria-describedby="showUpdateHelp">
+                Show Release Notes on Update
+                <span data-bs-toggle="tooltip" data-bs-title="Show Release Notes on Version Update.">
+                    <i class="fa-solid fa-circle-info ms-1"></i>
+                </span>
+            </label>
+        </div>
     </form>
 
     <hr>
+
     <div class="text-center">
         <a class="link-body-emphasis text-decoration-none d-inline-block" target="_blank" rel="noopener"
-           href="homepage_url">Get Help</a>
+           href="homepage_url">Home Page</a>
         <svg><use xlink:href="#bi-dot" /></svg>
         <a class="link-body-emphasis text-decoration-none d-inline-block" target="_blank" rel="noopener"
            href="https://github.com/cssnr/text-formatter/discussions/categories/feature-requests">Request Feature</a>

@@ -1,9 +1,13 @@
 // JS for popup.html
 
-import { saveOptions, showToast, updateOptions } from './export.js'
+import {
+    saveOptions,
+    showToast,
+    updateManifest,
+    updateOptions,
+} from './export.js'
 
 document.addEventListener('DOMContentLoaded', initPopup)
-
 document
     .querySelectorAll('a[href]')
     .forEach((el) => el.addEventListener('click', popupLinks))
@@ -20,9 +24,7 @@ document
  */
 async function initPopup() {
     console.debug('initPopup')
-    const manifest = chrome.runtime.getManifest()
-    document.querySelector('#version').textContent = manifest.version
-    document.querySelector('[href="homepage_url"]').href = manifest.homepage_url
+    updateManifest()
 
     const { options } = await chrome.storage.sync.get(['options'])
     console.debug('options:', options)

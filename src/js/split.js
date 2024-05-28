@@ -25,6 +25,10 @@ document.getElementById('close').addEventListener('click', closeBtn)
 document.getElementById('readOnly').addEventListener('change', toggleReadOnly)
 document.getElementById('length-form').addEventListener('submit', addLength)
 
+document
+    .getElementById('open-options')
+    .addEventListener('click', () => chrome.runtime.openOptionsPage())
+
 /**
  * Initialize Page
  * @function initPage
