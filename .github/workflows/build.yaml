@@ -80,13 +80,22 @@ jobs:
         with:
           name: artifacts
 
+      - name: "Generate Release Notes"
+        env:
+          NOTES: "Full Release Notes: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.ref }}"
+        uses: jsdaniell/create-json@v1.2.3
+        with:
+          name: "amo-metadata.json"
+          json: '{"version": {"release_notes": "${{ env.NOTES }}"}}'
+
       - name: "Sign Mozilla Addon"
         run: |-
           unzip *firefox* -d src
           npx web-ext sign --api-key="${{ secrets.FIREFOX_API_KEY }}" \
             --api-secret="${{ secrets.FIREFOX_API_SECRET }}" \
-            --source-dir "${{ env.SRC_DIR }}" \
-            --channel "${{ env.MOZILLA_CHANNEL }}"
+            --source-dir="${{ env.SRC_DIR }}" \
+            --channel="${{ env.MOZILLA_CHANNEL }}" \
+            --amo-metadata="amo-metadata.json"
 
       - name: "Rename Signed Artifact"
         working-directory: web-ext-artifacts
