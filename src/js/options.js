@@ -1,9 +1,8 @@
 // JS for options.html
 
-import { saveOptions, updateOptions } from './export.js'
+import { saveOptions, updateManifest, updateOptions } from './export.js'
 
 chrome.storage.onChanged.addListener(onChanged)
-
 document.addEventListener('DOMContentLoaded', initOptions)
 document
     .querySelectorAll('#options-form input')
@@ -21,15 +20,8 @@ document
  */
 async function initOptions() {
     console.debug('initOptions')
-    const manifest = chrome.runtime.getManifest()
-    document.querySelector('#version').textContent = manifest.version
-    document.querySelector('[href="homepage_url"]').href = manifest.homepage_url
-
-    await setShortcuts({
-        mainKey: '_execute_action',
-        openPage: 'open_page',
-        openSplit: 'open_split',
-    })
+    updateManifest()
+    await setShortcuts()
 
     const { options } = await chrome.storage.sync.get(['options'])
     console.debug('options:', options)
@@ -46,7 +38,6 @@ function onChanged(changes, namespace) {
     // console.debug('onChanged:', changes, namespace)
     for (const [key, { newValue }] of Object.entries(changes)) {
         if (namespace === 'sync' && key === 'options') {
-            console.debug('newValue:', newValue)
             updateOptions(newValue)
         }
     }
@@ -55,19 +46,23 @@ function onChanged(changes, namespace) {
 /**
  * Set Keyboard Shortcuts
  * @function setShortcuts
- * @param {Object} mapping { elementID: name }
+ * @param {String} selector
  */
-async function setShortcuts(mapping) {
+async function setShortcuts(selector = '#keyboard-shortcuts') {
+    const table = document.querySelector(selector)
+    const tbody = table.querySelector('tbody')
+    const source = table.querySelector('tfoot > tr').cloneNode(true)
     const commands = await chrome.commands.getAll()
-    for (const [elementID, name] of Object.entries(mapping)) {
-        // console.debug(`${elementID}: ${name}`)
-        const command = commands.find((x) => x.name === name)
-        if (command?.shortcut) {
-            console.debug(`${elementID}: ${command.shortcut}`)
-            const el = document.getElementById(elementID)
-            if (el) {
-                el.textContent = command.shortcut
-            }
+    for (const command of commands) {
+        // console.debug('command:', command)
+        const row = source.cloneNode(true)
+        // TODO: Chrome does not parse the description for _execute_action in manifest.json
+        let description = command.description
+        if (!description && command.name === '_execute_action') {
+            description = 'Show Popup'
         }
+        row.querySelector('.description').textContent = description
+        row.querySelector('kbd').textContent = command.shortcut || 'Not Set'
+        tbody.appendChild(row)
     }
 }
