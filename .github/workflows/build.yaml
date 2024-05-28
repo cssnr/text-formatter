@@ -9,6 +9,7 @@ env:
   SRC_DIR: src
   CHROME_ID: medimbembaeldnglneiipkenpagjfcdj
   MOZILLA_ID: web-tools-extension@cssnr.com
+  MOZILLA_CHANNEL: unlisted
 
 jobs:
   build:
@@ -84,7 +85,8 @@ jobs:
           unzip *firefox* -d src
           npx web-ext sign --api-key="${{ secrets.FIREFOX_API_KEY }}" \
             --api-secret="${{ secrets.FIREFOX_API_SECRET }}" \
-            --source-dir "src"
+            --source-dir "${{ env.SRC_DIR }}" \
+            --channel "${{ env.MOZILLA_CHANNEL }}"
 
       - name: "Rename Signed Artifact"
         working-directory: web-ext-artifacts
