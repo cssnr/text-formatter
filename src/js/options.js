@@ -20,12 +20,14 @@ document
  */
 async function initOptions() {
     console.debug('initOptions')
-    updateManifest()
-    await setShortcuts()
 
-    const { options } = await chrome.storage.sync.get(['options'])
-    console.debug('options:', options)
-    updateOptions(options)
+    updateManifest().catch((e) => console.warn(e))
+    setShortcuts().catch((e) => console.warn(e))
+
+    chrome.storage.sync.get(['options']).then((items) => {
+        // console.debug('options:', items.options)
+        updateOptions(items.options)
+    })
 }
 
 /**
@@ -46,20 +48,24 @@ function onChanged(changes, namespace) {
 /**
  * Set Keyboard Shortcuts
  * @function setShortcuts
- * @param {String} selector
+ * @param {String} [selector]
  */
 async function setShortcuts(selector = '#keyboard-shortcuts') {
+    if (!chrome.commands) {
+        return console.debug('Skipping: chrome.commands')
+    }
     const table = document.querySelector(selector)
+    table.classList.remove('d-none')
     const tbody = table.querySelector('tbody')
     const source = table.querySelector('tfoot > tr').cloneNode(true)
     const commands = await chrome.commands.getAll()
     for (const command of commands) {
         // console.debug('command:', command)
         const row = source.cloneNode(true)
-        // TODO: Chrome does not parse the description for _execute_action in manifest.json
         let description = command.description
+        // Note: Chrome does not parse the description for _execute_action in manifest.json
         if (!description && command.name === '_execute_action') {
-            description = 'Show Popup'
+            description = 'Open Popup' // NOTE: Also defined in: manifest.json
         }
         row.querySelector('.description').textContent = description
         row.querySelector('kbd').textContent = command.shortcut || 'Not Set'

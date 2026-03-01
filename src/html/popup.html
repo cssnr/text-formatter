@@ -12,13 +12,45 @@
 </head>
 <body>
 
+<div class="container-fluid p-2">
+    <div class="d-flex flex-row align-items-center text-nowrap">
+        <div class="dropdown">
+            <a class="link-body-emphasis text-decoration-none" id="bs-theme-dropdown" title="Theme Switcher" role="button" data-bs-toggle="dropdown" aria-expanded="false" href="#">
+                <i id="theme-icon" class="fa-solid fa-circle-half-stroke fa-lg" style="min-width: 20px;"></i> <i class="fa-solid fa-caret-down fa-xs mx-1"></i></a>
+            <ul class="dropdown-menu auto dropdown-menu-end" aria-labelledby="bs-theme-dropdown">
+                <li><button class="dropdown-item" data-bs-theme-value="dark" aria-pressed="false">
+                    <i class="fa-regular fa-moon" style="min-width: 16px;"></i> <span class="ms-3">Dark</span></button></li>
+                <li><button class="dropdown-item" data-bs-theme-value="light" aria-pressed="false">
+                    <i class="fa-solid fa-sun" style="min-width: 16px;"></i> <span class="ms-3">Light</span></button></li>
+                <li><button class="dropdown-item" data-bs-theme-value="auto" aria-pressed="false">
+                    <i class="fa-solid fa-circle-half-stroke" style="min-width: 16px;"></i> <span class="ms-3">Auto</span></button></li>
+            </ul>
+        </div> <!-- dropdown -->
+
+        <div class="d-flex flex-grow-1 overflow-hidden align-items-baseline">
+            <a class="link-body-emphasis text-decoration-none fs-4" title="Home Page" href="homepage_url">
+                <img src="../images/logo32.png" alt="Logo" class="mb-1" style="height: 1.1em;">
+                Text Formatter</a>
+            <a class="link-body-emphasis text-decoration-none small ms-1" title="Release Notes" href="version_url">
+                v<span class="version"></span></a>
+        </div>
+
+        <div class="ms-1">
+            <a class="btn btn-sm btn-outline-info" role="button" href="../html/options.html" title="Options">
+                <i class="fa-solid fa-gears"></i></a>
+        </div>
+    </div> <!-- d-flex -->
+</div> <!-- container-fluid -->
+
+<hr class="my-0">
+
 <div class="container-fluid p-3">
     <a class="btn btn-primary w-100 mb-2" role="button" href="../html/split.html">
         <i class="fa-solid fa-align-justify me-2"></i> Open Text Split Page</a>
 
     <form id="options-form" class="mb-2">
         <div class="form-floating mb-2">
-            <input id="textSplitLength" aria-describedby="textSplitLengthHelp" type="number" class="form-control" autocomplete="off">
+            <input id="textSplitLength" min="1" aria-describedby="textSplitLengthHelp" type="number" class="form-control" autocomplete="off">
             <label for="textSplitLength" class="form-label">Default Split Length</label>
             <div class="form-text visually-hidden" id="textSplitLengthHelp">Default Text Split Length.</div>
         </div>
@@ -45,14 +77,6 @@
 
     <a class="btn btn-outline-info w-100" role="button" href="../html/options.html">
         <i class="fa-solid fa-sliders me-2"></i> Open Options</a>
-
-    <hr>
-
-    <div class="d-flex justify-content-center align-items-center text-center small">
-        <img src="../images/logo16.png" width="16" height="16" alt="Text Formatter" title="Text Formatter">
-        <a class="link-offset-2 link-underline link-underline-opacity-0 link-underline-opacity-75-hover mx-2" rel="noopener"
-           href="homepage_url">Simple Extension</a> v<span class="version"></span>
-    </div>
 </div> <!-- container -->
 
 <div aria-live="polite" aria-atomic="true" class="">

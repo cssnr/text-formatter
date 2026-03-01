@@ -225,9 +225,7 @@ function updateTable(data) {
         const row = tbody.insertRow()
 
         const button = document.createElement('a')
-        const svg = document
-            .querySelector('.fa-regular.fa-trash-can')
-            .cloneNode(true)
+        const svg = document.querySelector('.fa-regular.fa-trash-can').cloneNode(true)
         button.appendChild(svg)
         button.title = 'Delete'
         button.dataset.value = value
@@ -246,7 +244,7 @@ function updateTable(data) {
             'clip',
             'link-body-emphasis',
             'link-underline',
-            'link-underline-opacity-0'
+            'link-underline-opacity-0',
         )
         link.setAttribute('role', 'button')
         const cell2 = row.insertCell()
