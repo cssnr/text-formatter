@@ -1,5 +1,7 @@
 // JS Exports
 
+export const githubURL = 'https://github.com/cssnr/text-formatter'
+
 /**
  * Process Text
  * @function processText
@@ -34,7 +36,7 @@ export function processText(text, length) {
 /**
  * Save Options Callback
  * @function saveOptions
- * @param {InputEvent} event
+ * @param {UIEvent} event
  */
 export async function saveOptions(event) {
     console.debug('saveOptions:', event)
@@ -53,67 +55,153 @@ export async function saveOptions(event) {
     } else if (event.target.type === 'checkbox') {
         value = event.target.checked
     } else if (event.target.type === 'number') {
-        const number = parseInt(event.target.value, 10)
-        console.log('number:', number)
-        console.log('!isNaN(number):', !isNaN(number))
-        console.log('number >= 0:', number >= 0)
-        console.log('if', !isNaN(number) || number >= 0)
-        let min = 1
-        let max = 999
-        if (!isNaN(number) && number >= min && number <= max) {
+        const number = Number.parseFloat(event.target.value)
+        let min = event.target.min ? Number.parseFloat(event.target.min) : -Infinity
+        let max = event.target.max ? Number.parseFloat(event.target.max) : Infinity
+        if (!Number.isNaN(number) && number >= min && number <= max) {
             event.target.value = number.toString()
-            options[event.target.id] = number
+            value = number
         } else {
             event.target.value = options[event.target.id]
-            // TODO: Add Error Handling
-            // showToast(`Value ${number} Out of Range for ${event.target.id}`,'warning')
             return
         }
-        value = number.toString()
     } else {
         value = event.target.value
     }
     if (value !== undefined) {
         options[key] = value
-        console.info(`Set: ${key}:`, value)
+        console.log(`Set %c${key}:`, 'color: Khaki', value)
         await chrome.storage.sync.set({ options })
     } else {
-        console.warn('No Value for key:', key)
+        console.warn(`No Value for key: ${key}`)
     }
 }
 
 /**
- * Update Options based on typeof
+ * Update Options
  * @function initOptions
  * @param {Object} options
  */
 export function updateOptions(options) {
-    for (const [key, value] of Object.entries(options)) {
+    console.debug('updateOptions:', options)
+    for (let [key, value] of Object.entries(options)) {
+        if (value === undefined) {
+            console.warn('Value undefined for key:', key)
+            continue
+        }
+        // Option Key should be `radioXXX` and values should be the option IDs
+        if (key.startsWith('radio')) {
+            key = value //NOSONAR
+            value = true //NOSONAR
+        }
         // console.debug(`${key}: ${value}`)
         const el = document.getElementById(key)
-        if (el) {
-            if (typeof value === 'boolean') {
-                el.checked = value
-            } else if (typeof value === 'string') {
-                el.value = value
-            }
+        if (!el) {
+            continue
         }
-        // el.classList.remove('is-invalid')
+        if (el.tagName !== 'INPUT') {
+            el.textContent = value.toString()
+        } else if (typeof value === 'boolean') {
+            el.checked = value
+        } else {
+            el.value = value
+        }
+        if (el.dataset.related) {
+            hideShowElement(`#${el.dataset.related}`, value)
+        }
     }
+}
+
+/**
+ * Hide or Show Element with JQuery
+ * @function hideShowElement
+ * @param {String} selector
+ * @param {Boolean} [show]
+ * @param {String} [speed]
+ */
+function hideShowElement(selector, show, speed = 'fast') {
+    const element = $(`${selector}`)
+    // console.debug('hideShowElement:', show, element)
+    if (show) {
+        element.show(speed)
+    } else {
+        element.hide(speed)
+    }
+}
+
+/**
+ * Link Click Callback
+ * Note: Firefox popup requires a call to window.close()
+ * @function linkClick
+ * @param {MouseEvent|Event} event
+ * @param {Boolean} [close]
+ */
+export async function linkClick(event, close = false) {
+    console.debug('linkClick:', close, event)
+    const target = event.currentTarget
+    const href = target.getAttribute('href').replace(/^\.+/, '')
+    console.debug('href:', href)
+    let url
+    if (href.startsWith('#')) {
+        console.debug('return on anchor link')
+        return
+    }
+    event.preventDefault()
+    if (href.endsWith('html/options.html')) {
+        await chrome.runtime.openOptionsPage()
+        if (close) window.close()
+        return
+    } else if (href.startsWith('http') || href.includes('/html/page.html?url=')) {
+        url = href
+    } else {
+        url = chrome.runtime.getURL(href)
+    }
+    console.debug('url:', url)
+    await activateOrOpen(url)
+    if (close) window.close()
+}
+
+/**
+ * Activate or Open Tab from URL
+ * @function activateOrOpen
+ * @param {String} url
+ * @param {Boolean} [open]
+ * @return {Promise<chrome.tabs.Tab>}
+ */
+export async function activateOrOpen(url, open = true) {
+    console.debug('activateOrOpen:', url, open)
+    // Note: To Get Tab from Tabs (requires host permissions or tabs)
+    const tabs = await chrome.tabs.query({ currentWindow: true })
+    console.debug('tabs:', tabs)
+    for (const tab of tabs) {
+        if (tab.url === url) {
+            console.debug('%cTab found, activating:', 'color: Lime', tab)
+            return await chrome.tabs.update(tab.id, { active: true })
+        }
+    }
+    if (open) {
+        console.debug('%cTab not found, opening url:', 'color: Yellow', url)
+        return await chrome.tabs.create({ active: true, url })
+    }
+    console.warn('tab not found and open not set!')
 }
 
 /**
  * Update DOM with Manifest Details
  * @function updateManifest
  */
-export function updateManifest() {
+export async function updateManifest() {
     const manifest = chrome.runtime.getManifest()
-    document
-        .querySelectorAll('.version')
-        .forEach((el) => (el.textContent = manifest.version))
-    document
-        .querySelectorAll('[href="homepage_url"]')
-        .forEach((el) => (el.href = manifest.homepage_url))
+    console.debug('updateManifest:', manifest)
+    document.querySelectorAll('.version').forEach((el) => {
+        el.textContent = manifest.version
+    })
+    document.querySelectorAll('[href="homepage_url"]').forEach((el) => {
+        el.href = manifest.homepage_url
+    })
+    document.querySelectorAll('[href="version_url"]').forEach((el) => {
+        el.href = `${githubURL}/releases/tag/${manifest.version}`
+    })
 }
 
 /**

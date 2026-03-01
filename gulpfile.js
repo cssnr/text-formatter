@@ -23,7 +23,10 @@ gulp.task('fontawesome', () => {
                 'node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-*',
                 'node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-*',
             ],
-            { base: 'node_modules/@fortawesome/fontawesome-free' }
+            {
+                base: 'node_modules/@fortawesome/fontawesome-free',
+                encoding: false,
+            },
         )
         .pipe(gulp.dest('src/dist/fontawesome'))
 })
@@ -34,7 +37,4 @@ gulp.task('jquery', () => {
         .pipe(gulp.dest('src/dist/jquery'))
 })
 
-gulp.task(
-    'default',
-    gulp.parallel('bootstrap', 'clipboard', 'fontawesome', 'jquery')
-)
+gulp.task('default', gulp.parallel('bootstrap', 'clipboard', 'fontawesome', 'jquery'))

@@ -44,17 +44,17 @@
         <div class="row">
             <div class="col-sm-4 col-12">
                 <label for="textSplitLength" class="form-label">Default Split Length</label>
-                <input id="textSplitLength" aria-describedby="textSplitLengthHelp" type="number" class="form-control" autocomplete="off">
+                <input id="textSplitLength" min="1" aria-describedby="textSplitLengthHelp" type="number" class="form-control" autocomplete="off">
                 <div class="form-text" id="textSplitLengthHelp">Default Text Split Length.</div>
             </div>
             <div class="col-sm-4 col-12">
                 <label for="textSliderMin" class="form-label">Slider Min</label>
-                <input id="textSliderMin" aria-describedby="textSplitLengthHelp" type="number" class="form-control" autocomplete="off">
+                <input id="textSliderMin" min="0" aria-describedby="textSplitLengthHelp" type="number" class="form-control" autocomplete="off">
                 <div class="form-text" id="textSliderMinHelp">Minimum Slider Range.</div>
             </div>
             <div class="col-sm-4 col-12">
                 <label for="textSliderMax" class="form-label">Slider Max</label>
-                <input id="textSliderMax" aria-describedby="textSliderMaxHelp" type="number" class="form-control" autocomplete="off">
+                <input id="textSliderMax" min="1" aria-describedby="textSliderMaxHelp" type="number" class="form-control" autocomplete="off">
                 <div class="form-text" id="textSliderMaxHelp">Maximum Slider Range.</div>
             </div>
         </div>
@@ -84,10 +84,10 @@
     <div class="text-center">
         <a class="link-body-emphasis text-decoration-none d-inline-block" target="_blank" rel="noopener"
            href="homepage_url">Home Page</a>
-        <svg><use xlink:href="#bi-dot" /></svg>
+        <span class="mx-1">&bull;</span>
         <a class="link-body-emphasis text-decoration-none d-inline-block" target="_blank" rel="noopener"
-           href="https://github.com/cssnr/text-formatter/discussions/categories/feature-requests">Request Feature</a>
-        <svg><use xlink:href="#bi-dot" /></svg>
+           href="https://github.com/cssnr/text-formatter/issues/new?template=1-feature.yaml">Request Feature</a>
+        <span class="mx-1">&bull;</span>
         <a class="link-body-emphasis text-decoration-none d-inline-block" target="_blank" rel="noopener"
            href="https://github.com/cssnr/text-formatter/issues">Open Issue</a>
     </div>
@@ -107,9 +107,6 @@
             <div class="toast-body text-break small"></div>
         </div>
     </div>
-    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" id="bi-dot" viewBox="0 0 16 16">
-        <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
-    </svg>
 </div> <!-- d-none -->
 
 <script type="text/javascript" src="../dist/jquery/jquery.min.js"></script>

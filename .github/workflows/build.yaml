@@ -1,15 +1,14 @@
 name: "Build"
 
 on:
+  workflow_call:
+    inputs: &inputs
+      version:
+        description: "Build Version"
+        type: string
+        default: "0.0.1"
   workflow_dispatch:
-  release:
-    types: [published]
-
-env:
-  SRC_DIR: src
-  CHROME_ID: medimbembaeldnglneiipkenpagjfcdj
-  MOZILLA_ID: web-tools-extension@cssnr.com
-  MOZILLA_CHANNEL: unlisted
+    inputs: *inputs
 
 jobs:
   build:
@@ -17,133 +16,45 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
-    outputs:
-      version: ${{ steps.manifest.outputs.version }}
-      package_name: ${{ steps.manifest.outputs.package_name }}
+    permissions:
+      contents: write
 
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: "Parse Manifest"
-        id: manifest
-        run: |-
-          echo "version=$(jq '.version' < manifest.json | tr -d '"')" >> "$GITHUB_OUTPUT"
-          export name="$(jq '.name' < manifest.json | tr -d '"' | tr '[:upper:]' '[:lower:]')"
-          echo "package_name=${name// /_}" >> "$GITHUB_OUTPUT"
-
-      - name: "Release Version Check"
-        if: ${{ github.event_name == 'release' }}
-        run: |-
-          echo ${{ github.ref_name }}
-          echo ${{ steps.manifest.outputs.version }}
-          if [ "${{ github.ref_name }}" != "${{ steps.manifest.outputs.version }}" ];then
-            echo "Manifest Version ${version} does not match release tag ${{ github.ref_name }}"
-            exit 1
-          fi
-
-      - name: "Setup Node"
-        uses: actions/setup-node@v4
+      - name: "Setup Node 24"
+        uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
 
-      - name: "Build All"
-        run: |-
-          npm install
+      - name: "Install"
+        run: |
+          npm ci
+
+      - name: "Update Manifest Version"
+        if: ${{ github.event_name == 'release' }}
+        uses: cssnr/update-json-value-action@v2
+        with:
+          values: ${{ inputs.version }}
+
+      - name: "Debug Manifest"
+        continue-on-error: true
+        run: |
+          cat -n manifest.json
+
+      - name: "Build"
+        run: |
           npm run build
 
       - name: "Upload to Actions"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: artifacts
-          path: web-ext-artifacts/
+          path: web-ext-artifacts
 
       - name: "Upload to Release"
-        uses: svenstaro/upload-release-action@v2
+        if: ${{ github.event_name == 'release' }}
+        uses: cssnr/upload-release-action@v1
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: web-ext-artifacts/*
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
-
-  publish-mozilla:
-    name: "Publish Mozilla"
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    needs: [build]
-    if: ${{ github.event_name == 'release' }}
-
-    steps:
-      - name: "Download Artifacts"
-        uses: actions/download-artifact@v4
-        with:
-          name: artifacts
-
-      - name: "Generate Release Notes"
-        env:
-          NOTES: "Full Release Notes: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.ref }}"
-        uses: jsdaniell/create-json@v1.2.3
-        with:
-          name: "amo-metadata.json"
-          json: '{"version": {"release_notes": {"en-US": "${{ env.NOTES }}"}}}'
-
-      - name: "Sign Mozilla Addon"
-        run: |-
-          unzip *firefox* -d src
-          npx web-ext sign --api-key="${{ secrets.FIREFOX_API_KEY }}" \
-            --api-secret="${{ secrets.FIREFOX_API_SECRET }}" \
-            --source-dir="${{ env.SRC_DIR }}" \
-            --channel="${{ env.MOZILLA_CHANNEL }}" \
-            --amo-metadata="amo-metadata.json"
-
-      - name: "Rename Signed Artifact"
-        working-directory: web-ext-artifacts
-        run: |-
-          ls -l .
-          mv *.xpi "${{ needs.build.outputs.package_name }}-firefox.xpi"
-          ls -l .
-
-      - name: "Upload to Actions"
-        uses: actions/upload-artifact@v4
-        with:
-          name: signed
-          path: web-ext-artifacts/
-
-      - name: "Upload to Release"
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: web-ext-artifacts/*
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
-
-  update-mozilla:
-    name: "Update Mozilla"
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    needs: [publish-mozilla]
-    if: ${{ github.event_name == 'release' }}
-
-    steps:
-      - name: "Checkout"
-        uses: actions/checkout@v4
-
-      - name: "Mozilla Addon Update"
-        uses: cssnr/mozilla-addon-update-action@master
-        with:
-          url: "https://github.com/cssnr/text-formatter/releases/download/{version}/text_formatter-firefox.xpi"
-          addon_id: ${{ env.MOZILLA_ID }}
-
-      - name: "Commit files"
-        run: |
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git commit -a -m "Update update.json"
-
-      - name: "Push changes"
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: master
+          globs: web-ext-artifacts/*
