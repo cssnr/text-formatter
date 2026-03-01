@@ -4,7 +4,6 @@
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/text-formatter?logo=github)](https://github.com/cssnr/text-formatter/releases/latest)
 [![Workflow Release](https://img.shields.io/github/actions/workflow/status/cssnr/text-formatter/release.yaml?logo=norton&logoColor=white&label=release)](https://github.com/cssnr/text-formatter/actions/workflows/release.yaml)
 [![Workflow Test](https://img.shields.io/github/actions/workflow/status/cssnr/text-formatter/test.yaml?logo=norton&logoColor=white&label=test)](https://github.com/cssnr/text-formatter/actions/workflows/test.yaml)
-[![Workflow Lint](https://img.shields.io/github/actions/workflow/status/cssnr/text-formatter/lint.yaml?logo=norton&logoColor=white&label=lint)](https://github.com/cssnr/text-formatter/actions/workflows/lint.yaml)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/text-formatter?logo=listenhub&label=updated)](https://github.com/cssnr/text-formatter/pulse)
 [![GitHub Repo Size](https://img.shields.io/github/repo-size/cssnr/text-formatter?logo=buffer&label=repo%20size)](https://github.com/cssnr/text-formatter?tab=readme-ov-file#readme)
 [![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/text-formatter?logo=devbox)](https://github.com/cssnr/text-formatter?tab=readme-ov-file#readme)
